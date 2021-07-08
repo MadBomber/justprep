@@ -188,5 +188,3 @@ module Justprep
     end # def execute
   end # class << self
 end # module Justprep
-
-Justprep.execute
