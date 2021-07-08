@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+bundle install
+
+# Assumes 'which' is available
+just=`which just`
+brew=`which brew`
+
+if [[ "x" == "x$just" ]] ; then
+  echo
+  echo "The 'just' command line utility is not installed."
+  if [[ "x" != "x%brew" ]] ; then
+    echo "To install it do this:"
+    echo "  brew install just"
+  else
+    echo "Use your favorite package manager to install 'just'"
+  fi
+  echo
+fi
