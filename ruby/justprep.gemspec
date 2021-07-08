@@ -19,7 +19,7 @@ Gem::Specification.new do |spec|
     the 'just' tool.
   EOS
 
-  spec.homepage      = "http://github.com/MadBomber/justprep"
+  spec.homepage      = "http://github.com/MadBomber/justprep/ruby"
   spec.license       = "MIT"
   spec.required_ruby_version = ">= 2.4.0"
 
