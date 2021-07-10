@@ -1,23 +1,43 @@
-# justprep/justfile
+# github.com/MadBomber/justprep/**/justfile
 #
 # brew install just
 # Handy way to save and run project-specific commands
 # https://github.com/casey/just
 #
-# By default the "just" CLI utility looks for a file named "justfile"
-# in its current directory hiearchie.  Using "justprep" as a pre-processor
-# (in an alias wrapper for example) the file "main.just" will be used
-# to build a new "justfile" by incorporating various user defined modules.
 
-# TODO: add some recipes that make sense at this level
+set positional-arguments := true
 
-list:
+# List available recipes
+@list:
   echo
-  just -l
+  echo "Available Recipes at"
+  echo `pwd`
+  echo "are:"
+  echo
+  just -l --list-prefix 'just ' --list-heading ''
   echo
 
-compiler_the_crystall_version:
+
+# Compile the Crystal implementation
+@compile:
   cd crystal && just compile
 
-do_a_local_install_of_ruby_gem:
-  cd ruby && rake
+
+# Build the Ruby Gem
+@build_gem:
+  cd ruby && just build
+
+
+# Show current source version
+@show:
+  cd ruby && just show
+
+
+# Set the version to major.minor.patch
+@set version:
+  cd ruby && just set {{version}}
+
+
+# Bump version level: major.minor.patch
+@bump level:
+  cd ruby && just bump {{level}}

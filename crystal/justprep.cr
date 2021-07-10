@@ -3,33 +3,20 @@
 # frozen_string_literal: true
 # warn_indent: true
 ##########################################################
-###
-# #  File: justprep.cr
-# #  Desc: A preprocessor for justfiles using "main.just"
-# #        Looks for keywords: import include require with
-# #        followed by a file name or path.
-##
-# #        It looks for a file "main.just" in the current directory.
-# #        If it does not exist, does nothing.  Otherwise it reviews
-# #        the file for the KEYWORDS.  When found it inserts the
-# #        content of the specified file into that position.  The
-# #        final text is written out to the "justfile" for processing
-# #        with the "just" tool.
-##
-# # By:   Dewayne VanHoozer (dvanhoozer@gmail.com)
-##
-# # The following system environment variable are supported:
-##
-# #   variable name             default value
-# #   ---------------------     -------------
-# #   JUSTPREP_FILENAME_IN  ... main.just
-# #   JUSTPREP_FILENAME_OUT ... justfile
-# #   JUSTPREP_KEYWORDS     ... 'import include require with'
-##
+# File: justprep.cr
+# Desc: A preprocessor to "just" cli tool
+# By:   Dewayne VanHoozer (dvanhoozer@gmail.com)
+#
+# The following system environment variable are supported:
+#
+# variable name             default value
+# ---------------------     -------------
+# JUSTPREP_FILENAME_IN  ... main.just
+# JUSTPREP_FILENAME_OUT ... justfile
+# JUSTPREP_KEYWORDS     ... 'import include require with'
+#
 
 require "file_utils"
-
-VERSION = "0.1.0.2"
 
 if ARGV.size > 0
   ARGV.each do |param|

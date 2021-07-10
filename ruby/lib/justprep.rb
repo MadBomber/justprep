@@ -1,31 +1,18 @@
 # encoding: utf-8
 # frozen_string_literal: true
 # warn_indent: true
-
 ##########################################################
-###
-##  File: justprep/ruby/lib/justprep.rb
-##
-##  Desc: A preprocessor for the "just" command line utility.
-##        It looks for keywords: import include require with
-##        followed by a file name or path.
-##
-##        It looks for a file "main.just" in the current directory.
-##        If it does not exist, does nothing.  Otherwise it reviews
-##        the file for the KEYWORDS.  When found it inserts the
-##        content of the specified file into that position.  The
-##        final text is written out to the "justfile" for processing
-##        with the "just" tool.
-##
-##  The following system environment variable are supported:
-##
-##    variable name             default value
-##    ---------------------     -------------
-##    JUSTPREP_FILENAME_IN  ... main.just
-##    JUSTPREP_FILENAME_OUT ... justfile
-##    JUSTPREP_KEYWORDS     ... 'import include require with'
-##
-##  By:   Dewayne VanHoozer (dvanhoozer@gmail.com)
+# File: justprep.rb
+# Desc: A preprocessor to "just" cli tool
+# By:   Dewayne VanHoozer (dvanhoozer@gmail.com)
+#
+# The following system environment variable are supported:
+#
+# variable name             default value
+# ---------------------     -------------
+# JUSTPREP_FILENAME_IN  ... main.just
+# JUSTPREP_FILENAME_OUT ... justfile
+# JUSTPREP_KEYWORDS     ... 'import include require with'
 #
 
 require           "pathname"
