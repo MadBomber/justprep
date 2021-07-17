@@ -30,7 +30,7 @@ module Justprep
       modules = []
 
       JUSTPREP_KEYWORDS.each do |keyword|
-        modules << text.select{|x| x.start_with? "#{keyword} "}
+        modules << text.select{|x| x.start_with?("#{keyword} ") || x.strip == keyword}
       end
 
       return modules.flatten!
@@ -129,7 +129,10 @@ module Justprep
 
       mainfile  = just_find_it
 
-      exit(0) if mainfile.nil?
+      if mainfile.nil?
+        STDERR.puts "WARNING: JUSTPREP_FILENAME_IN Not Found: #{JUSTPREP_FILENAME_IN}"
+        exit(0)
+      end
 
       basefile  = mainfile.parent + JUSTPREP_FILENAME_OUT
 
@@ -145,12 +148,21 @@ module Justprep
       modules.each do |a_line|
         an_index        = text.index a_line
         begin_filename  = a_line.index(' ')
-        module_filename = a_line[begin_filename, a_line.size - begin_filename].strip
+
+        if begin_filename.nil?
+          module_filename = ""
+        else
+          module_filename = a_line[begin_filename, a_line.size - begin_filename].chomp.strip
+        end
 
         if module_filename.empty?
-          STDERR.puts "#{an_index}: #{a_line}"
           STDERR.puts "ERROR: No path/to/file was provided"
-          next
+          line_out = sprintf('% d ', an_index+1)
+          STDERR.puts (" "*line_out.size)+"|"
+          STDERR.puts "#{line_out}| #{a_line}"
+          STDERR.print (" "*line_out.size)+"|"
+          STDERR.puts (" "*(a_line.size+2)) + "^"
+          exit(1)
         end
 
         if module_filename.include?('~')  || module_filename.include?('$')
@@ -166,10 +178,15 @@ module Justprep
         if module_path.exist?
           text[an_index]  = include_content_from(module_path)
         else
-          STDERR.puts "#{an_index}: #{a_line}"
-          STDERR.puts "| ERROR: File Does Not Exist - #{module_path}"
+          STDERR.puts "ERROR: File Does Not Exist - #{module_path}"
+          line_out = sprintf('% d ', an_index+1)
+          STDERR.puts (" "*line_out.size)+"|"
+          STDERR.puts "#{line_out}| #{a_line}"
+          STDERR.print (" "*line_out.size)+"|"
+          STDERR.puts (" "*(a_line.index(module_filename)+1)) + "^"
+          exit(1)
         end
-      end
+      end # modules.each do |a_line|
 
       basefile.write text.flatten!.join "\n"
     end # def execute

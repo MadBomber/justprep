@@ -79,7 +79,7 @@ def find_modules(main_text : Array(String | Array(String))) : Array(String)
   modules = Array(String).new
 
   JUSTPREP_KEYWORDS.each do |keyword|
-    lines = main_text.select { |a_line| a_line.to_s.starts_with? "#{keyword} " }
+    lines = main_text.select { |a_line| a_line.to_s.starts_with?("#{keyword} ") || a_line.to_s.strip == keyword }
     unless lines.empty?
       lines.each do |a_line|
         modules << a_line.to_s
@@ -136,7 +136,10 @@ end
 
 mainfile_path = just_find_it(FileUtils.pwd)
 
-exit(0) if mainfile_path.nil?
+if mainfile_path.nil?
+  STDERR.puts "WARNING: JUSTPREP_FILENAME_IN Not Found: #{JUSTPREP_FILENAME_IN}"
+  exit(0)
+end
 
 basefile_path = mainfile_path.gsub(JUSTPREP_FILENAME_IN, JUSTPREP_FILENAME_OUT)
 
@@ -170,9 +173,13 @@ modules.each do |a_line|
   end
 
   if module_path.nil? || 0 == module_path.size
-    STDERR.puts "#{an_index}: #{a_line}"
     STDERR.puts "ERROR: No path/to/file was provided"
-    next
+    line_out = sprintf("% d ", an_index + 1) unless an_index.nil?
+    STDERR.puts (" "*line_out.size) + "|" unless line_out.nil?
+    STDERR.puts "#{line_out}| #{a_line}"
+    STDERR.print (" "*line_out.size) + "|" unless line_out.nil?
+    STDERR.puts (" "*(a_line.size + 2)) + "^"
+    exit(1)
   end
 
   if module_path.includes?('~') || module_path.includes?('$')
@@ -186,8 +193,14 @@ modules.each do |a_line|
   if File.exists?(module_path)
     text[an_index] = include_content_from(module_path) unless an_index.nil?
   else
-    STDERR.puts "#{an_index}: #{a_line}"
-    STDERR.puts "| ERROR: File Does Not Exist - #{module_path}"
+    STDERR.puts "ERROR: File Does Not Exist - #{module_path}"
+    line_out = sprintf("% d ", an_index + 1) unless an_index.nil?
+    STDERR.puts (" "*line_out.size) + "|" unless line_out.nil?
+    STDERR.puts "#{line_out}| #{a_line}"
+    STDERR.print (" "*line_out.size) + "|" unless line_out.nil?
+    offset = a_line.index(module_path)
+    STDERR.puts (" "*(offset + 1)) + "^" unless offset.nil?
+    exit(1)
   end
 end
 

@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    justprep (1.0.0)
+    justprep (1.0.1)
 
 GEM
   remote: https://rubygems.org/
@@ -20,4 +20,4 @@ DEPENDENCIES
   rake (~> 13.0)
 
 BUNDLED WITH
-   2.2.21
+   2.2.24
