@@ -1,0 +1,48 @@
+Testing the happy path Crystal version...
+hello
+1
+22
+333
+4444
+55555
+666666
+Yes!
+what?
+wprld
+Done.
+Testing happy path Ruby version...
+hello
+1
+22
+333
+4444
+55555
+666666
+Yes!
+what?
+wprld
+Done.
+Testing the error paths Crystal version...
+ERROR: File Does Not Exist - /path/to/bad_filename.just
+   |
+ 4 | with /path/to/bad_filename.just
+   |      ^
+exit code: 1
+ERROR: No path/to/file was provided
+   |
+ 4 | with
+   |      ^
+exit code: 1
+Done.
+Testing the error paths Ruby version...
+ERROR: File Does Not Exist - /path/to/bad_filename.just
+   |
+ 4 | with /path/to/bad_filename.just
+   |      ^
+exit code: 1
+ERROR: No path/to/file was provided
+   |
+ 4 | with
+   |      ^
+exit code: 1
+Done.

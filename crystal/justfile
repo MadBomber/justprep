@@ -1,14 +1,13 @@
 # github.com/MadBomber/justprep/**/crystal/justfile
 #
 # brew install just
-# Handy way to save and run project-specific commands
-# https://github.com/casey/just
+#   Handy way to save and run project-specific commands
+#   https://github.com/casey/just
 #
 
-alias help := list
 
 # List available recipes
-@list:
+@help:
   echo
   echo "Available Recipes at"
   echo `pwd`
@@ -18,21 +17,23 @@ alias help := list
   echo
 
 
-# Install the justprep executable in ~/bin
-install where="/usr/local/bin": compile
-  cp bin/justprep {{where}}
+alias compile := build
 
-
-alias cr  := compile
-alias ins := install
-
-# Compile the crystal version of justprep
-compile: make_bin
+# Builds the crystal version of justprep
+build: _make_bin
   crystal build --no-debug --release -p -o bin/justprep justprep.cr version.cr
 
 
+# Install the justprep executable in ~/bin
+install where="/usr/local/bin": build
+  cp bin/justprep {{where}}
+
+#################################################
+## Hidden Recipes
+
+
 # Create the ./bin directory if it does not exist
-@make_bin:
+_make_bin:
   #!/bin/bash
   if [[ ! -d ./bin ]] ; then
     mkdir ./bin

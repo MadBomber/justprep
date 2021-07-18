@@ -5,7 +5,7 @@
 set positional-arguments := true
 
 # List available recipes
-@list:
+@help:
   echo
   echo "Available Recipes at"
   echo `pwd`
@@ -16,8 +16,13 @@ set positional-arguments := true
 
 
 # Build the current gem
-build:
+@build:
   rake clean clobber build
+
+
+# Install the gem locally
+@install:
+  rake install:local
 
 
 #################################################

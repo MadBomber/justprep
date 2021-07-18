@@ -2,6 +2,8 @@
 A pre-processor for the "just" command line utility.
 https://github.com/casey/just
 
+Please forgive the disorganization - thie README is still under development.
+
 Casey's `just` utility is such a useful tool; but, it has one thing that bothered me - the inability to inherently include recipies from other files.  For those of us who work on many projects in parallel the ability to share recipes (effective code reuse / modularization) is an important feature.  Its advantages are:
 
 * provides for smaller more easily maintained files
@@ -29,6 +31,7 @@ Allowing this flexibility also opens up some use cases which are not supported b
         * [.bashrc](#bashrc)
         * [.bashrc__just](#bashrc__just)
     + [$HOME the .justfile Convention](#home-the-justfile-convention)
+- [The Just List aka Help/Usage Output](#the-just-list-aka-helpusage-output)
 - [Process](#process)
     + [Example Input File:  `main.just`](#example-input-file--mainjust)
     + [Example Output File: `justfile`](#example-output-file-justfile)
@@ -40,6 +43,10 @@ Allowing this flexibility also opens up some use cases which are not supported b
     + [From `justprep`](#from-justprep)
     + [From `just`](#from-just)
     + [Example of a `just` Error](#example-of-a-just-error)
+- [Testing](#testing)
+* [Organization](#organization)
+- [Ruby Gem Version](#ruby-gem-version)
+- [Crystal Version](#crystal-version)
 
 <!-- /MarkdownTOC -->
 
@@ -219,6 +226,30 @@ with ~/,justfile
 
 ```
 
+## The Just List aka Help/Usage Output
+
+I keep going back and fornth over naming the first recipe (the default recipe) in my justfiles.  The `just` command line option that is used in my default recipe is called list.  I then to think of it as help.  As the default recipe it is the one that is executed whenever `just` is invoked without specifying a recipe.
+
+Here is what shows up in my terminal when I execute `just` in this repository's root directory:
+```bash
+$ just
+
+Available Recipes at
+/Users/dewayne/sandbox/git_repos/madbomber/justprep
+are:
+
+just build       # Build both Ruby Gem and Crystal versions
+just bump level  # Bump version level: major.minor.patch
+just help        # Displays this list of available recipes
+just install     # Install both Ruby Gem and Crystal versions
+just set version # Set the version to major.minor.patch
+just test        # Test both the Ruby Gem and the Crystal Executable
+just version     # Show current source version
+
+```
+
+There are more recipes than this in the repository root ($RR) than just these.  The others are hidden.  Any `just` recipe that begins with the underscore character '+' is defined as a hidden recipe and will not be included in the `just -l` command.
+
 ## Process
 
 `justprep` reads the `$JUSTPREP_FILENAME_IN` file from the current working directory.  If there is not one there, it then goes up the directory hierarchy until it finds one or until there is no more directory places to look.
@@ -303,13 +334,20 @@ Noticed I used multiple spaces after the keyword.  There only needs to be one; b
 * included files may not contain inclusionary keywords - only single-level inclusions are allowed - you cannot include a file that also includes another file
 * the file must be present and not a directory otherwise an error message is sent to STDERR and the exit code is set to 1
 
-
 ## Error Messages
+
 ### From `justprep`
+
 When a filename does not exist, an ERROR message will be written to STDERR.  The exit code will be set to 1.
+
+There is also a WARNING message that comes to STDERR when `justprep` does not find a JUSTPREP_FILENAME_IN file it the current directory hierarchy.  The exit code is still set to zero which allows the `just` program to execute.
+
 ### From `just`
+
 Any errors in syntax, duplication of recipes etc. from just will will relative to the output file from `justprep` which may be found in the included files.  Review the outfile file at the line number provided.  If it is in an inclued file, you can easily find out which file requires the fix by looking at the header/foot banners that surround the included file content.
+
 ### Example of a `just` Error
+
 Here is the error:
 ```bash
 $ jj
@@ -337,3 +375,29 @@ $ cat -n justfile
     14  doit: world
 ```
 You can see that line 10 is clearly within the banners giving the absolute path to the file which was included that contains the error noted by the `just` tool.
+
+## Testing
+
+From the repository root directory use `just test` to execute the tests for both the Ruby Gem version and the Crystal version.  Here is the output that I get:
+
+```bash
+jj test
+crystal build --no-debug --release -p -o bin/justprep justprep.cr version.cr
+justprep 1.0.1 built to pkg/justprep-1.0.1.gem.
+justprep (1.0.1) installed.
+Tests PASSED
+```
+
+In the `justprep/test` there is a file named `expected.txt` that contains the expected results of the various test scripts.  It is compared via `diff` to the file `results.txt` that is generated from the test scripts.  If there is any difference the test has failed.  On failure the difference between results.txt and expected.txt will be echo'ed to the terminal.
+
+# Organization
+
+This repository contains two versions of the `justprep` pre-processor.  One is implemented as a Ruby Gem.  The other is implemented in Crystal.  While Crystal shares some of the syntax as Ruby, not all Ruby code is directly usable by Crystal which is too bad; but, they are close enough to be fun.
+
+## Ruby Gem Version
+
+TODO: Put stuff about the Ruby Gem here ...
+
+## Crystal Version
+
+TODO: Put stuff about the Crystal Version here ...
