@@ -315,7 +315,7 @@ The path to the file to be included, imported, required or with'ed etc. follows 
 ```
 It can be an absolute path (begins with a '/' character) or relative.  If relative, then "Relative to what?" is a good question.  A good answer is "Relative to the location of the `$JUSTPREP_FILENAME_IN` file."  That is the file location that just included the relative file.
 
-The path to the file to be included can make use of system environment variables in either the $VAR form or ${VAR} form.  Also the tildi character `~` if present as the first character of the file path is taken as a shortcut to the user's home directory.
+The path to the file to be included can make use of system environment variables in either the $VAR form or ${VAR} form.  Also the tilde character `~` if present as the first character of the file path is taken as a shortcut to the user's home directory.
 
 ### Examples Using Shell Variables in path-to-include-file
 ```bash
