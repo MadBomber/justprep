@@ -65,7 +65,7 @@ SYSTEM ENVIRONMENT VARIABLES:
 
 SUGGESTION:
   Create an alias for your command shell. For example
-    alias jj='justprop && just'
+    alias jj='justprep && just'
 
 THANKS TO:
   Casey Rodarmor <casey@rodarmor.com>
@@ -142,11 +142,8 @@ if mainfile_path.nil?
 end
 
 basefile_path = mainfile_path.gsub(JUSTPREP_FILENAME_IN, JUSTPREP_FILENAME_OUT)
-
 mainfile = File.open(mainfile_path, "r")
-
 basefile = File.new(basefile_path, "w")
-
 text = Array(String | Array(String)).new
 
 mainfile.gets_to_end.split("\n").each do |a_line|

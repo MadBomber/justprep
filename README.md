@@ -1,10 +1,17 @@
+# Good News! Feb 16, 2022
+`just` version 0.11.2+ now supports duplicate recipes where the last 
+one defined is the one that is executed.
+
+To enable this feature add this setting to your file(s):
+  set allow-duplicate-recipes
+
 # justprep
 A pre-processor for the "just" command line utility.
 https://github.com/casey/just
 
 Please forgive the disorganization - thie README is still under development.
 
-Casey's `just` utility is such a useful tool; but, it has one thing that bothered me - the inability to inherently include recipies from other files.  For those of us who work on many projects in parallel the ability to share recipes (effective code reuse / modularization) is an important feature.  Its advantages are:
+Casey's `just` utility is such a useful tool; but, it has one thing that bothered me - the inability to inherently include recipes from other files.  For those of us who work on many projects in parallel the ability to share recipes (effective code reuse / modularization) is an important feature.  Its advantages are:
 
 * provides for smaller more easily maintained files
 * more cohesive file content
