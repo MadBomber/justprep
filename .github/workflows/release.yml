@@ -1,4 +1,6 @@
 name: release
+permissions:
+  contents: write
 on:
   push:
   pull_request:
@@ -8,7 +10,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, macos-latest]
+        include:
+          - os: ubuntu-latest
+            asset-name: justprep-linux-amd64
+          - os: macos-latest
+            asset-name: justprep-macos-amd64
     runs-on: ${{ matrix.os }}
     steps:
       - name: Download source
@@ -19,3 +25,10 @@ jobs:
         uses: extractions/setup-just@v1
       - name: Build
         run: cd crystal && just build
+          # - name: Upload binaries to release
+          #   uses: svenstaro/upload-release-action@v2
+          #   with:
+          #     repo_token: ${{ secrets.GITHUB_TOKEN }}
+          #     file: bin/justprep
+          #     asset_name: ${{ matrix.asset-name }}
+          #     tag: ${{ github.ref }}
