@@ -5,8 +5,10 @@ on:
     branches: [github-actions]
 jobs:
   build:
-    matrix:
-      os: [ubuntu-latest, macos-latest]
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
     runs-on: ${{ matrix.os }}
     steps:
       - name: Download source
