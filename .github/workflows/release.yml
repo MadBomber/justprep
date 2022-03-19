@@ -2,9 +2,7 @@ name: release
 permissions:
   contents: write
 on:
-  push:
-    tags:
-      - '*'
+  release:
 jobs:
   build:
     strategy:
