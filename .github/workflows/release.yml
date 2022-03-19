@@ -3,8 +3,8 @@ permissions:
   contents: write
 on:
   push:
-    # tags:
-    #   - '*'
+    tags:
+      - '*'
 jobs:
   build:
     strategy:
@@ -34,10 +34,3 @@ jobs:
           file: crystal/bin/justprep
           asset_name: ${{ format('justprep-{0}-{1}', github.event.release.tag_name, matrix.asset-suffix) }}
           tag: ${{ github.ref }}
-        # TODO: remove this line and below after testing
-        if: ${{ startsWith(github.ref, 'refs/tags/') }}
-      - name: Upload artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: ${{ format('justprep-{0}', matrix.asset-suffix) }}
-          path: crystal/bin/justprep
