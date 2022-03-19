@@ -2,8 +2,9 @@ name: release
 permissions:
   contents: write
 on:
-  release:
-    types: [published]
+  push:
+    tags:
+      - '*'
 jobs:
   build:
     strategy:
@@ -11,9 +12,9 @@ jobs:
       matrix:
         include:
           - os: ubuntu-latest
-            asset-suffix: linux-amd64
+            asset-name: justprep-linux-amd64
           - os: macos-latest
-            asset-suffix: macos-amd64
+            asset-name: justprep-macos-amd64
     runs-on: ${{ matrix.os }}
     steps:
       - name: Download source
@@ -31,5 +32,5 @@ jobs:
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: crystal/bin/justprep
-          asset_name: ${{ format('justprep-{0}-{1}', github.event.release.tag_name, matrix.asset-suffix) }}
+          asset_name: ${{ matrix.asset-name }}
           tag: ${{ github.ref }}
