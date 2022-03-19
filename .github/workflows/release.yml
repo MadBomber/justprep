@@ -23,12 +23,14 @@ jobs:
         uses: crystal-lang/install-crystal@v1
       - name: Install Just
         uses: extractions/setup-just@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Build
         run: cd crystal && just build
       - name: Upload binaries to release
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: bin/justprep
+          file: crystal/bin/justprep
           asset_name: ${{ matrix.asset-name }}
           tag: ${{ github.ref }}
