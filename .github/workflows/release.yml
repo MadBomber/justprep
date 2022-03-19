@@ -3,8 +3,8 @@ permissions:
   contents: write
 on:
   push:
-    tags:
-      - '*'
+    # tags:
+    #   - '*'
 jobs:
   build:
     strategy:
@@ -12,9 +12,9 @@ jobs:
       matrix:
         include:
           - os: ubuntu-latest
-            asset-name: justprep-linux-amd64
+            asset-suffix: linux-amd64
           - os: macos-latest
-            asset-name: justprep-macos-amd64
+            asset-suffix: macos-amd64
     runs-on: ${{ matrix.os }}
     steps:
       - name: Download source
@@ -32,5 +32,12 @@ jobs:
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: crystal/bin/justprep
-          asset_name: ${{ matrix.asset-name }}
+          asset_name: ${{ format('justprep-{0}-{1}', github.event.release.tag_name, matrix.asset-suffix) }}
           tag: ${{ github.ref }}
+        # TODO: remove this line and below after testing
+        if: ${{ startsWith(github.ref, 'refs/tags/') }}
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ format('justprep-{0}', matrix.asset-suffix) }}
+          path: crystal/bin/justprep

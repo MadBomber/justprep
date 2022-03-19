@@ -21,7 +21,7 @@ alias compile := build
 
 # Builds the crystal version of justprep
 build: _make_bin
-  crystal build --no-debug --release -p -o bin/justprep justprep.cr version.cr
+  crystal build --no-debug --release --static -p -o bin/justprep justprep.cr version.cr
 
 
 # Install the justprep executable in ~/bin
