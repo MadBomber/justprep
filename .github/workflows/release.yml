@@ -3,8 +3,8 @@ permissions:
   contents: write
 on:
   push:
-  pull_request:
-    branches: [github-actions]
+    tags:
+      - '*'
 jobs:
   build:
     strategy:
@@ -25,10 +25,10 @@ jobs:
         uses: extractions/setup-just@v1
       - name: Build
         run: cd crystal && just build
-          # - name: Upload binaries to release
-          #   uses: svenstaro/upload-release-action@v2
-          #   with:
-          #     repo_token: ${{ secrets.GITHUB_TOKEN }}
-          #     file: bin/justprep
-          #     asset_name: ${{ matrix.asset-name }}
-          #     tag: ${{ github.ref }}
+      - name: Upload binaries to release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: bin/justprep
+          asset_name: ${{ matrix.asset-name }}
+          tag: ${{ github.ref }}
