@@ -5,7 +5,9 @@ on:
     branches: [github-actions]
 jobs:
   build:
-    runs-on: ubuntu-latest
+    matrix:
+      os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
     steps:
       - name: Download source
         uses: actions/checkout@v2
