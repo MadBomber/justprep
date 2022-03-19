@@ -10,5 +10,7 @@ jobs:
         uses: actions/checkout@v2
       - name: Install Crystal
         uses: crystal-lang/install-crystal@v1
+      - name: Install Just
+        uses: extractions/setup-just@v1
       - name: Run tests
-        run: cd crystal && crystal spec
+        run: cd crystal && just build
