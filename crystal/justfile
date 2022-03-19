@@ -18,8 +18,11 @@
 
 
 alias compile := build
-release := "false"
-extra_build_args := if join(os(), release) == "linux/true" { "--static" } else { "" }
+
+# static builds only work on linux (and only if you have the dev libraries installed)
+# default to not building static-ly but only if asked for and on linux
+static := "false"
+extra_build_args := if join(os(), static) == "linux/true" { "--static" } else { "" }
 
 # Builds the crystal version of justprep
 build: _make_bin
