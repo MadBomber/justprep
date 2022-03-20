@@ -410,7 +410,9 @@ This repository contains two versions of the `justprep` pre-processor.  One is i
 ## Ruby Gem Version
 
 TODO: Put stuff about the Ruby Gem here ...
+`gem install justprep`
 
 ## Crystal Version
 
 TODO: Put stuff about the Crystal Version here ...
+TODO: Create a brew formula
