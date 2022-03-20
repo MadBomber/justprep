@@ -1,4 +1,4 @@
-VERSION = "1.0.1"
+VERSION = "1.0.2"
 
 # The value of version is kept in sync with the ruby gem's version.
 # This means that the intent is to ALWAYS keep the functionality of

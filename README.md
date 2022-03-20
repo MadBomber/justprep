@@ -1,10 +1,3 @@
-# Good News! Feb 16, 2022
-`just` version 0.11.2+ now supports duplicate recipes where the last 
-one defined is the one that is executed.
-
-To enable this feature add this setting to your file(s):
-  set allow-duplicate-recipes
-
 # justprep
 A pre-processor for the "just" command line utility.
 https://github.com/casey/just
@@ -19,6 +12,10 @@ Casey's `just` utility is such a useful tool; but, it has one thing that bothere
 
 Allowing this flexibility also opens up some use cases which are not supported by the `just` utility - the ability to over-ride a recipe, for example.  Duplicate recipes (and aliases) are treated by `just` as errors.  Allowing the inclusion of multiple files into a single project specific `justfile` can lead to having duplicate recipes.  These are easily found and can be dealt with manually.
 
+HOWEVER, as of version 0.11.2+ `just` now supports duplicate recipes where the last  one defined is the one that is executed.  To take advantage of this capability you need to add this to your just file(s) ...
+
+  set allow-duplicate-recipes
+
 # Table of Contents
 
 <!-- MarkdownTOC -->
@@ -30,6 +27,7 @@ Allowing this flexibility also opens up some use cases which are not supported b
 - [Install](#install)
     + [just and the RubyGem justprep](#just-and-the-rubygem-justprep)
     + [Building the Crystal Version](#building-the-crystal-version)
+        * [Download the latest Release](#download-the-latest-release)
         * [Default Install to /usr/local/bin](#default-install-to-usrlocalbin)
         * [Custom Install Directory](#custom-install-directory)
 - [Shell Configuration and My Conventions](#shell-configuration-and-my-conventions)
@@ -67,8 +65,9 @@ Allowing this flexibility also opens up some use cases which are not supported b
 
 THis is a string of one or more keywords to use to designate a file to be included into the output file passed on to `just`
 
-The default is 'include import require with' where each keyword is a designation in the input file for an inclusionary action on a designated file path.  You do not have to use all or any.  Personnally I've pretty much standardized on "with" as my perfered keyword.  You may use whatever makes you happy.
+The default is 'include import require with' where each keyword is a designation in the input file for an inclusionary action on a designated file path.  You do not have to use all or any.  Personnally I've pretty much standardized on "with" as my perfered keyword.  You may use whatever makes you happy.  Nor do you have to use the suggested ones in my list.  Make up you own if you like.
 
+Why does just prep support more than one inclusionary keyword marker?  Well, each computer language has its own syntax flavor.  The examples above or consistent with Ruby, Java-ish, Ada, Perl and others.  Use what feels right to you.
 
 ### JUSTPREP_FILENAME_IN
 
@@ -85,7 +84,7 @@ This is the name of the file that is created by `justprep` which is passed on to
 
 The default is "justfile" because that is the default that `just` uses.  Its possible to use other file names but you have to tell `just` via its `--justfile` command line option the name of the file.
 
-Remember this also is just a file name and not a path.  It will be the name of the file that is created by `justprep` in the same directory where the `JUSTPREP_FILENAME_IN` is located.
+Remember this also is a file name and not a path.  It will be the name of the file that is created by `justprep` in the same directory where the `JUSTPREP_FILENAME_IN` is located.
 
 
 ## Install
@@ -107,9 +106,15 @@ $ gem install justprep
 ```
 
 ### Building the Crystal Version
+#### Download the latest Release
+
+You can download the latest binary version from this repository if you do not want to go through the trouble of building it youself.
+
+Thank you Greg Lutostanski for setting up the Github workflow to autogenerate the binary releases.
+
 #### Default Install to /usr/local/bin
 
-Also notice that in this repository there is a version of `justprep` implemented in Crystal.  I've used Crystal version 1.0.0 to compile it for my use.
+Also notice that in this repository there is a version of `justprep` implemented in Crystal.
 
 To use the Crystal executable instead of the Ruby Gem version you will need to do a few more things.  First have Crystal installed.
 
@@ -117,6 +122,7 @@ To use the Crystal executable instead of the Ruby Gem version you will need to d
 $ brew install crystal
 $ git clone http://github.com/MadBomber/justprep
 $ cd justprep 
+$ export RR=`pwd`
 $ just install
 
 ```

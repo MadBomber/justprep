@@ -8,6 +8,10 @@
 #   Load/unload environment variables based on $PWD
 #   https://direnv.net/
 #
+# gem install bump
+#   Bump your gem version file
+#   https://github.com/gregorym/bump
+#
 # SMELL:  Assumes that $RR is defined; well it is if the user
 #         has direnv installed and its been allowed in this repo
 
