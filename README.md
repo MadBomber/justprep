@@ -89,14 +89,16 @@ Remember this also is a file name and not a path.  It will be the name of the fi
 
 ## Install
 
-### just and the RubyGem justprep
-
 First you need `just` which is easy enough to install (unless you are not on a Mac or other great platform) using the `brew` package manager:
 
 ```bash
 $ brew install just
 
 ```
+
+There are a few different options for you to get `justprep`
+
+### RubyGem
 
 `justprep` is available as a Ruby Gem.  To install the gem do:
 
@@ -105,45 +107,43 @@ $ gem install justprep
 
 ```
 
-### Building the Crystal Version
-#### Download the latest Release
-
-You can download the latest binary version from this repository if you do not want to go through the trouble of building it youself.
-
-Thank you Greg Lutostanski for setting up the Github workflow to autogenerate the binary releases.
-
-#### Default Install to /usr/local/bin
+### Crystal version
 
 Also notice that in this repository there is a version of `justprep` implemented in Crystal.
 
-To use the Crystal executable instead of the Ruby Gem version you will need to do a few more things.  First have Crystal installed.
+
+#### With Homebrew
+
+There is a preliminary version packaged with `homebrew` you can install this by running:
+
+```bash
+$ brew install lutostag/brews/justprep
+
+```
+
+#### Precompiled binaries
+
+Binary releases are available at https://github.com/MadBomber/justprep/releases/latest they are currently compiled for macos and linux (on the x86_64 architecture).
+
+You should be able to download the binaries and use them directly.
+
+```bash
+# Download the matching binary from https://github.com/MadBomber/justprep/releases/latest
+$ chmod a+x justprep-*
+$ mv justprep-* ~/.bin/justprep # or other appropriate directory
+```
+
+#### From Source
+
+To use the Crystal executable instead of the Ruby Gem version you will need to do a few more things.
 
 ```bash
 $ brew install crystal
 $ git clone http://github.com/MadBomber/justprep
 $ cd justprep 
 $ export RR=`pwd`
-$ just install
+$ just install /usr/local/bin  # you can install to a different directory if you wish
 
-```
-
-The `install` recipe will compile and then move the executable to the default location `/usr/local/bin`
-
-#### Custom Install Directory
-
-If you do not have `/usr/local/bin` as part of your $PATH, or you just want the executable installed in a different directory that is in your $PATH you can do this:
-
-```bash
-$ just install ~/bin
-
-```
-
-`~/bin` is just where I put mine.  You can put yours wherever you want.
-
-See what other recipes are in this `justfile` by doing this:
-
-```bash
-$ just
 ```
 
 ## Shell Configuration and My Conventions
