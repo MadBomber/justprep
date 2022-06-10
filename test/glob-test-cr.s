@@ -1,4 +1,4 @@
-# justprep/test/error-test-cr.s
+# justprep/test/glob-test-cr.s
 
 echo
 echo "+---------+"
@@ -6,15 +6,16 @@ echo "| Crystal |"
 echo "+---------+"
 echo
 
-echo "Testing the error paths Crystal version..."
+echo "Testing the glob paths Crystal version..."
 
-export JUSTPREP_FILENAME_IN=error_bad.just
+export JUSTPREP_FILENAME_IN=glob_good.just
 
 rm -f justfile
 ../crystal/bin/justprep
 echo "exit code: $?"
+cat justfile glob_dir/expected_justfile
 
-export JUSTPREP_FILENAME_IN=error_missing.just
+export JUSTPREP_FILENAME_IN=glob_bad.just
 
 rm -f justfile
 ../crystal/bin/justprep

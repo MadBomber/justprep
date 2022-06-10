@@ -1,3 +1,6 @@
+# created by sed as backup
+*-r
+
 *.gem
 *.rbc
 /.config

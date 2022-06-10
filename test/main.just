@@ -1,9 +1,8 @@
-# experiments/just_playing/main.just
-
+# .../justprep/test/main.just
 
 # see if the world is paying attention
 @world: hello what
-  echo "wprld"
+  echo "world"
 
 # Usage
 @help:

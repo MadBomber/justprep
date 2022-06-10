@@ -8,14 +8,14 @@
 #   Load/unload environment variables based on $PWD
 #   https://direnv.net/
 #
-# gem install bump
-#   Bump your gem version file
-#   https://github.com/gregorym/bump
-#
 # SMELL:  Assumes that $RR is defined; well it is if the user
 #         has direnv installed and its been allowed in this repo
 
-set positional-arguments := true
+set positional-arguments    := true
+set allow-duplicate-recipes := true
+
+version_tag   := "VERSION"
+version_file  := "ruby/lib/justprep/common/constants.crb"
 
 # Displays this list of available recipes
 help:
@@ -41,9 +41,10 @@ help:
 
 
 # Install both Ruby Gem and Crystal versions
-@install: _install_rb _install_rb
+@install: _install_rb _install_cr
 
 
+###################################################
 # Test both the Ruby Gem and the Crystal Executable
 test: _prep
   #!/usr/bin/env bash
@@ -58,23 +59,32 @@ test: _prep
     echo $result
   fi
 
+# Ruby "rake test" on the Ruby code
+@ruby_unit_test:
+  #!/usr/bin/env bash
+  original_name=$JUSTPREP_FILENAME_IN
+  export JUSTPREP_FILENAME_IN=main.just
 
-###########################################
-## Version-related Recipes
+  cd $RR/ruby
+  rake test
 
-# Show current source version
-@version:
-  cd $RR/ruby && just show
-
-
-# Set the version to major.minor.patch
-@set version:
-  cd $RR/ruby && just set {{version}}
+  export JUSTPREP_FILENAME_IN=$original_name
 
 
-# Bump version level: major.minor.patch
-@bump level:
-  cd $RR/ruby && just bump {{level}}
+#################################################
+## Recipes that deal with the source code version
+## Version manager is handled by the "bump" gem
+
+# Set the version: major . minor . patch
+set_version version:
+  #!/usr/bin/env bash
+  old_version=`grep '^[ \t]*{{version_tag}}' $RR/{{version_file}}`
+  sed -i -r "s/${old_version}/VERSION = \"{{version}}\"/" \
+    $RR/{{version_file}}
+
+# Show current version
+@show_version:
+  grep '^[ \t]*{{version_tag}}' $RR/{{version_file}}
 
 
 ###########################################
@@ -88,7 +98,7 @@ test: _prep
 
 # Build the Ruby Gem
 @_build_rb:
-  # NOP - the rake install does the build
+  cd $RR/ruby && just install
 
 
 # Install the crystal version to its default directory

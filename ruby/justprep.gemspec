@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require_relative "lib/justprep/version"
+load "lib/justprep/common/constants.crb"
 
 Gem::Specification.new do |spec|
   spec.name          = "justprep"
-  spec.version       = Justprep::VERSION
+  spec.version       = VERSION
   spec.authors       = ["Dewayne VanHoozer"]
   spec.email         = ["dvanhoozer@gmail.com"]
 

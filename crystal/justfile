@@ -26,12 +26,14 @@ extra_build_args := if join(os(), static) == "linux/true" { "--static" } else { 
 
 # Builds the crystal version of justprep
 build: _make_bin
-  crystal build {{extra_build_args}} --no-debug --release -p -o bin/justprep justprep.cr version.cr
+  crystal build {{extra_build_args}} --no-debug --release -p -o bin/justprep \
+    $RR/ruby/lib/justprep/common/*.crb \
+    justprep.cr
 
 
 # Install the justprep executable in ~/bin
 install where="/usr/local/bin": build
-  cp bin/justprep {{where}}
+  sudo cp bin/justprep {{where}}
 
 #################################################
 ## Hidden Recipes

@@ -1,0 +1,31 @@
+# common/error_messages.crb
+
+# Parameters:
+#   line_number .. Integer (zero-based index)
+#   a_line ....... String
+#
+# Returns:
+#   nil
+#
+def error_file_does_not_exist(line_number, a_line)
+  STDERR.puts
+  STDERR.puts "ERROR: File Does Not Exist"
+
+  # Crystal types thinks line_number can be nil or Int32
+  line_out = sprintf("% d ", line_number.nil? ? 0 : line_number)
+  STDERR.puts (" "*line_out.size)+"|"
+  STDERR.puts "#{line_out}| #{a_line}"
+  STDERR.print (" "*line_out.size)+"|"
+
+  x              = a_line.index(" ")
+  begin_filename = x.nil? ? a_line.size + 2 : x + 2
+  end_filename   = a_line.size
+  len_filename   = end_filename - begin_filename + 1
+
+  len_filename = 13 if len_filename < 0
+
+  STDERR.puts (" "*begin_filename) + ("^"*len_filename)
+  STDERR.puts
+
+  return nil
+end

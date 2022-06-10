@@ -1,3 +1,13 @@
+
+##########################
+# testing the HAPPY path #
+##########################
+
+
++---------+
+| Crystal |
++---------+
+
 Testing the happy path Crystal version...
 hello
 1
@@ -8,8 +18,13 @@ hello
 666666
 Yes!
 what?
-wprld
+world
 Done.
+
++------+
+| Ruby |
++------+
+
 Testing happy path Ruby version...
 hello
 1
@@ -20,29 +35,261 @@ hello
 666666
 Yes!
 what?
-wprld
+world
 Done.
+
+############################
+# testing error conditions #
+############################
+
+
++---------+
+| Crystal |
++---------+
+
 Testing the error paths Crystal version...
-ERROR: File Does Not Exist - /path/to/bad_filename.just
+
+ERROR: File Does Not Exist
    |
  4 | with /path/to/bad_filename.just
-   |      ^
+   |      ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
 exit code: 1
-ERROR: No path/to/file was provided
+
+ERROR: File Does Not Exist
    |
  4 | with
-   |      ^
+   |      ^^^^^^^^^^^^^
+
 exit code: 1
 Done.
+
++------+
+| Ruby |
++------+
+
 Testing the error paths Ruby version...
-ERROR: File Does Not Exist - /path/to/bad_filename.just
+
+ERROR: File Does Not Exist
    |
  4 | with /path/to/bad_filename.just
-   |      ^
+   |      ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
 exit code: 1
-ERROR: No path/to/file was provided
+
+ERROR: File Does Not Exist
    |
  4 | with
-   |      ^
+   |      ^^^^^^^^^^^^^
+
 exit code: 1
+Done.
+
+######################################
+# testing the ability to GLOB a path #
+######################################
+
+
++---------+
+| Crystal |
++---------+
+
+Testing the glob paths Crystal version...
+exit code: 0
+# justprep/test/glob_good.just
+
+# the path contains several files
+# with glob_dir/**/*.just
+
+# >>> glob_dir/three/three.just
+# three to get ready
+@three:
+  echo "glob 333"
+
+# hi
+@hello:
+  echo "glob hello"
+# <<< glob_dir/three/three.just
+
+# >>> glob_dir/one/one.just
+# one for the money
+@one:
+  echo "glob 1"
+
+# johnny 5
+@five:
+  echo "glob 55555"
+# <<< glob_dir/one/one.just
+
+# >>> glob_dir/two/two.just
+# two for the money
+@two:
+  echo "glot 22"
+
+# six pick up sticks
+@six:
+  echo "glob 666666"
+# <<< glob_dir/two/two.just
+
+# >>> glob_dir/four/four.just
+# go cat go
+@four:
+  echo "glob 4444"
+# <<< glob_dir/four/four.just
+cat: glob_dir/expected_justfile: No such file or directory
+
+ERROR: File Does Not Exist
+   |
+ 4 | with /path/to/no_where/**/*.just
+   |      ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+exit code: 1
+Done.
+
++------+
+| Ruby |
++------+
+
+Testing the glob paths Ruby version...
+exit code: 0
+# justprep/test/glob_good.just
+
+# the path contains several files
+# with glob_dir/**/*.just
+
+# >>> glob_dir/four/four.just
+# go cat go
+@four:
+  echo "glob 4444"
+# <<< glob_dir/four/four.just
+
+# >>> glob_dir/one/one.just
+# one for the money
+@one:
+  echo "glob 1"
+
+# johnny 5
+@five:
+  echo "glob 55555"
+# <<< glob_dir/one/one.just
+
+# >>> glob_dir/three/three.just
+# three to get ready
+@three:
+  echo "glob 333"
+
+# hi
+@hello:
+  echo "glob hello"
+# <<< glob_dir/three/three.just
+
+# >>> glob_dir/two/two.just
+# two for the money
+@two:
+  echo "glot 22"
+
+# six pick up sticks
+@six:
+  echo "glob 666666"
+# <<< glob_dir/two/two.just
+
+ERROR: File Does Not Exist
+   |
+ 4 | with /path/to/no_where/**/*.just
+   |      ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+exit code: 1
+# justprep/test/glob_bad.just
+
+# the path does not exist
+# with /path/to/no_where/**/*.just
+Done.
+
+#########################
+# testing use of envars #
+#########################
+
+
++---------+
+| Crystal |
++---------+
+
+Testing the envar paths Crystal version...
+exit code: 0
+# .../justprep/test/envar.just
+
+# with ~/temp.just
+
+# >>> /Users/dewayne/temp.just
+# Move this file to your home directory
+
+# To test the subsitution of environment variables
+# and the tidil character.
+sub_envars:
+  echo "it worked"
+# <<< /Users/dewayne/temp.just
+
+# with $HOME/temp.just
+
+# >>> /Users/dewayne/temp.just
+# Move this file to your home directory
+
+# To test the subsitution of environment variables
+# and the tidil character.
+sub_envars:
+  echo "it worked"
+# <<< /Users/dewayne/temp.just
+
+# with ${HOME}/temp.just
+
+# >>> /Users/dewayne/temp.just
+# Move this file to your home directory
+
+# To test the subsitution of environment variables
+# and the tidil character.
+sub_envars:
+  echo "it worked"
+# <<< /Users/dewayne/temp.just
+Done.
+
++------+
+| Ruby |
++------+
+
+Testing the envar paths Ruby version...
+exit code: 0
+# .../justprep/test/envar.just
+
+# with ~/temp.just
+
+# >>> /Users/dewayne/temp.just
+# Move this file to your home directory
+
+# To test the subsitution of environment variables
+# and the tidil character.
+sub_envars:
+  echo "it worked"
+# <<< /Users/dewayne/temp.just
+
+# with $HOME/temp.just
+
+# >>> /Users/dewayne/temp.just
+# Move this file to your home directory
+
+# To test the subsitution of environment variables
+# and the tidil character.
+sub_envars:
+  echo "it worked"
+# <<< /Users/dewayne/temp.just
+
+# with ${HOME}/temp.just
+
+# >>> /Users/dewayne/temp.just
+# Move this file to your home directory
+
+# To test the subsitution of environment variables
+# and the tidil character.
+sub_envars:
+  echo "it worked"
+# <<< /Users/dewayne/temp.just
 Done.
