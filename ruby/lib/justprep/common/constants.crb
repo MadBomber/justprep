@@ -1,0 +1,5 @@
+VERSION = "1.2.2"
+
+JUSTPREP_FILENAME_IN  = ENV.fetch("JUSTPREP_FILENAME_IN", "main.just")
+JUSTPREP_FILENAME_OUT = ENV.fetch("JUSTPREP_FILENAME_OUT", "justfile")
+JUSTPREP_KEYWORDS     = ENV.fetch("JUSTPREP_KEYWORDS", "import include require with").split

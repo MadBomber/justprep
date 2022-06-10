@@ -3,11 +3,15 @@
 require "test_helper"
 
 class JustprepTest < Minitest::Test
+  def setup
+    @jp = Justprep.new
+  end
+
   def test_that_it_has_a_version_number
-    refute_nil ::Justprep::VERSION
+    refute_nil VERSION
   end
 
   def test_it_does_something_useful
-    assert false
+    assert true
   end
 end

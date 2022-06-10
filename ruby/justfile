@@ -1,6 +1,5 @@
 # github.com/MadBomber/justprep/**/ruby/justfile
 #
-# gem install bump
 
 set positional-arguments := true
 
@@ -14,6 +13,10 @@ set positional-arguments := true
   just -l --list-prefix 'just ' --list-heading ''
   echo
 
+# Run the minitest examples on the Ruby code
+test: build
+  rake test
+
 
 # Build the current gem
 @build:
@@ -24,26 +27,3 @@ set positional-arguments := true
 @install:
   rake install:local
 
-
-#################################################
-## Recipes that deal with the source code version
-## Version manager is handled by the "bump" gem
-
-# Set the version: major . minor . patch
-@set version:
-  bump set {{version}} --no-commit --replace-in ../crystal/version.cr
-
-
-# Show current version
-@show:
-  bump current
-
-
-# Bump the level:  major . minor . patch
-bump level='patch':
-  #!/bin/bash
-  if [[ "{{level}}" =~ ^(major|minor|patch)$ ]]; then
-    bump {{level}} --no-commit --replace-in ../crystal/version.cr
-  else
-    echo "ERROR: level must be one of: major, minor, patch"
-  fi

@@ -1,0 +1,24 @@
+# common/handle_command_line_parameters.crb
+
+
+# take care of ARGV
+#
+# Returns
+#   nil when there are no command line parameters
+#   otherwise it terminates the process
+#
+def handle_command_line_parameters
+  if ARGV.size > 0
+    ARGV.each do |param|
+      if "--version" == param
+        puts "jusrprep v#{VERSION} (#{IMPLEMENTATION})"
+      elsif ["-h", "--help"].includes?(param)
+        usage
+      else
+        STDERR.puts "justprep does not support: #{param}"
+      end
+    end
+
+    exit(1)
+  end
+end

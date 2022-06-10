@@ -1,4 +1,4 @@
-# justprep/test/error-test-rb.s
+# justprep/test/glob-test-rb.s
 
 echo
 echo "+------+"
@@ -6,18 +6,22 @@ echo "| Ruby |"
 echo "+------+"
 echo
 
-echo "Testing the error paths Ruby version..."
+echo "Testing the glob paths Ruby version..."
 
-export JUSTPREP_FILENAME_IN=error_bad.just
-
-rm -f justfile
-../ruby/bin/justprep
-echo "exit code: $?"
-
-export JUSTPREP_FILENAME_IN=error_missing.just
+export JUSTPREP_FILENAME_IN=glob_good.just
 
 rm -f justfile
+
 ../ruby/bin/justprep
 echo "exit code: $?"
+cat justfile
+
+
+export JUSTPREP_FILENAME_IN=glob_bad.just
+rm -f justfile
+
+../ruby/bin/justprep
+echo "exit code: $?"
+cat justfile
 
 echo "Done."
