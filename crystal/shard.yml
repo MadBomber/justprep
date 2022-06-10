@@ -1,5 +1,5 @@
 name: justprep
-version: 0.0.1
+version: 1.2.2
 
 authors:
   - Dewayne VanHoozer <dvanhoozer@gmail.com>
@@ -8,3 +8,10 @@ description: |
   justprep - a prototype pre-processor for the "just" command running utility.
 
 license: MIT
+
+
+development_dependencies:
+  minitest:
+    git: https://github.com/ysbaddaden/minitest.cr.git
+    version: ~> 1.0.0
+

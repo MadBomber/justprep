@@ -46,8 +46,11 @@ help:
 
 ###################################################
 # Test both the Ruby Gem and the Crystal Executable
-test: _prep
+test: _prep unit_tests
   #!/usr/bin/env bash
+
+  echo "Integration Tests ..."
+
   cd $RR/test
   source test.s > result.txt 2>&1
   result=`diff result.txt expected.txt`
@@ -59,16 +62,50 @@ test: _prep
     echo $result
   fi
 
-# Ruby "rake test" on the Ruby code
-@ruby_unit_test:
+# Ruby unit tests on common Crystal/Ruby code
+ruby_unit_test:
   #!/usr/bin/env bash
   original_name=$JUSTPREP_FILENAME_IN
   export JUSTPREP_FILENAME_IN=main.just
 
   cd $RR/ruby
-  rake test
+
+  echo "Ruby ..."
+
+  # redirecting stderr to stdout because of deprecation warnings
+  rake test 2>&1 |\
+    fgrep runs |\
+    fgrep assertions |\
+    fgrep failures |\
+    fgrep errors |\
+    fgrep skips
 
   export JUSTPREP_FILENAME_IN=$original_name
+
+
+# Crystal unit tests on common Crystal/Ruby code
+crystal_unit_test:
+  #!/usr/bin/env bash
+  original_name=$JUSTPREP_FILENAME_IN
+  export JUSTPREP_FILENAME_IN=main.just
+
+  cd $RR/crystal
+
+  echo "Crystal ..."
+
+  crystal run \
+    ../ruby/lib/justprep/common/*.crb \
+    ../ruby/test/common_test.rb |\
+  fgrep tests |\
+  fgrep failures |\
+  fgrep errors |\
+  fgrep skips
+
+  export JUSTPREP_FILENAME_IN=$original_name
+
+
+# Run the unit tests on the common methods in both implementations
+unit_tests: ruby_unit_test crystal_unit_test
 
 
 #################################################

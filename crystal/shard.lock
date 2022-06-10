@@ -1,2 +1,6 @@
 version: 2.0
-shards: {}
+shards:
+  minitest:
+    git: https://github.com/ysbaddaden/minitest.cr.git
+    version: 1.0.1
+
