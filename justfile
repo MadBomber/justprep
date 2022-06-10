@@ -98,7 +98,7 @@ set_version version:
 
 # Build the Ruby Gem
 @_build_rb:
-  cd $RR/ruby && just install
+  cd $RR/ruby && just build
 
 
 # Install the crystal version to its default directory
@@ -112,6 +112,6 @@ set_version version:
 
 
 # Oreoare to test the latest build
-@_prep: build install
+@_prep: build
   rm -f $RR/test/justfile
   rm -f $RR/test/result.txt
