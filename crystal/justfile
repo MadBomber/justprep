@@ -5,6 +5,8 @@
 #   https://github.com/casey/just
 #
 
+repo_root := "$PWD/.."
+
 
 # List available recipes
 @help:
@@ -16,7 +18,6 @@
   just -l --list-prefix 'just ' --list-heading ''
   echo
 
-
 alias compile := build
 
 # static builds only work on linux (and only if you have the dev libraries installed)
@@ -27,7 +28,7 @@ extra_build_args := if join(os(), static) == "linux/true" { "--static" } else { 
 # Builds the crystal version of justprep
 build: _make_bin
   crystal build {{extra_build_args}} --no-debug --release -p -o bin/justprep \
-    $RR/ruby/lib/justprep/common/*.crb \
+    {{repo_root}}/ruby/lib/justprep/common/*.crb \
     justprep.cr
 
 
