@@ -5,7 +5,7 @@
 # as kernel-level methods.  Because that is the
 # way that the Crystal implementation is designed.
 
-require "minitest/autorun"
+require_relative "test_helper"
 
 IMPLEMENTATION = "CrystalRuby"
 
@@ -18,6 +18,7 @@ class CommonTest < Minitest::Test
     refute_nil JUSTPREP_FILENAME_IN
     refute_nil JUSTPREP_FILENAME_OUT
     refute_nil JUSTPREP_KEYWORDS
+    refute_nil JUSTPREP_MODULE_KEYWORD
   end
 
 
