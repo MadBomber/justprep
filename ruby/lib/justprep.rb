@@ -13,6 +13,7 @@
 # JUSTPREP_FILENAME_IN  ... main.just
 # JUSTPREP_FILENAME_OUT ... justfile
 # JUSTPREP_KEYWORDS     ... 'import include require with'
+# JUSTPREP_MODULE_KEYWORD . 'module'
 #
 
 IMPLEMENTATION  = "Ruby"
@@ -36,9 +37,48 @@ load COMMON_DIR + "just_find_it.crb"
 load COMMON_DIR + "usage.crb"
 
 class Justprep
+  attr_accessor :module_names
+
   def initialize
     handle_command_line_parameters  # may terminate the process
+    @module_names = []
+  end
+
+
+  def generate_module_recipes
+    recipes = ""
+
+    @module_names.each do |mod_name|
+      recipes += <<~EOS
+
+        # Module #{mod_name}
+        @#{mod_name} what='' args='':
+          just -f {{module_#{mod_name}}} {{what}} {{args}}
+
+      EOS
     end
+
+    return recipes
+  end
+
+
+  # Inserts the module_name into the Array of module_names
+  # Returns a string that defines the variable for the path to the module
+  def replacement_for_module_line(line_number, a_string)
+    parts           = a_string.split(" ")
+    path_to_module  = parts[1..].join(" ")
+
+    unless File.exist?(path_to_module)
+      error_file_does_not_exist(line_number, a_string)
+      exit(1)
+    end
+
+    parts           = path_to_module.split("/")
+    module_name     = parts[parts.size-2]
+    @module_names  << module_name
+
+    return "module_#{module_name} := \"#{path_to_module}\""
+  end
 
 
   # single-level inclusion
@@ -101,15 +141,19 @@ class Justprep
         module_filenames.each do |module_filename|
           if File.exist?(module_filename)
             include_content_from(out_file, module_filename)
-        else
+          else
             error_file_does_not_exist(line_number, a_line)
-          exit(1)
+            exit(1)
+          end
         end
-        end
+      elsif JUSTPREP_MODULE_KEYWORD == parts.first.downcase
+        out_file.puts replacement_for_module_line(line_number, a_line)
       else
         out_file.puts a_line
       end
     end # in_file.readlines ...
+
+    out_file.puts generate_module_recipes
 
     out_file.close
     end # def execute
