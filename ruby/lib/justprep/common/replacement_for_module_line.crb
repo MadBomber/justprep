@@ -1,0 +1,28 @@
+# .../ruby/lig/justprep/common/replacement_for_module_line.crb
+
+# Inserts the module_name into the Array of module_names
+# Returns a string that defines the variable for the path to the module
+#
+# Input:
+#   line_numer .... Integer the line number in the source file
+#   a_string ...... String the line from the source file
+#
+# Output:
+#   an Array(String) of size 2 where
+#   .first is the fake module_name
+#   .last is the replacement string that defines the module variable
+#
+def replacement_for_module_line(line_number, a_string)
+  parts = a_string.split(" ")
+  path_to_module = parts[1..].join(" ")
+
+  unless File.exists?(path_to_module)
+    error_file_does_not_exist(line_number, a_string)
+    exit(1)
+  end
+
+  parts = path_to_module.split("/")
+  module_name = parts[parts.size - 2]
+
+  return [module_name, "module_#{module_name} := \"#{path_to_module}\""]
+end

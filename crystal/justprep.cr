@@ -27,24 +27,6 @@ class Justprep
     @module_names = Array(String).new
   end
 
-  # Inserts the module_name into the Array of module_names
-  # Returns a string that defines the variable for the path to the module
-  def replacement_for_module_line(line_number, a_string)
-    parts = a_string.split(" ")
-    path_to_module = parts[1..].join(" ")
-
-    unless File.exists?(path_to_module)
-      error_file_does_not_exist(line_number, a_string)
-      exit(1)
-    end
-
-    parts = path_to_module.split("/")
-    module_name = parts[parts.size - 2]
-    @module_names << module_name
-
-    return "module_#{module_name} := \"#{path_to_module}\""
-  end
-
   # single-level inclusion
   def include_content_from(out_file, module_filename)
     out_file.puts "\n# >>> #{module_filename}"
@@ -107,7 +89,9 @@ class Justprep
           end
         end
       elsif JUSTPREP_MODULE_KEYWORD == parts.first.downcase
-        out_file.puts replacement_for_module_line(line_number, a_line)
+        module_name, module_filename = replacement_for_module_line(line_number, a_line)
+        @module_names << module_name
+        out_file.puts module_filename
       else
         out_file.puts a_line
       end

@@ -108,4 +108,16 @@ class CommonTest < Minitest::Test
     assert_equal results, expected
   end
 
+
+  def test_replacement_for_module_line
+    source    = "module #{ENV['RR']}/ruby/test/my_mod/justfile"
+    expected  = "module_my_mod := \"my_mod/justfile\""
+
+    module_name, module_filename = replacement_for_module_line(999, source)
+
+    module_filename.gsub!(__dir__ + '/', '')
+
+    assert_equal module_name, "my_mod"
+    assert_equal module_filename, expected
+  end
 end

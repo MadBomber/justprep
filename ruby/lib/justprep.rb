@@ -36,6 +36,7 @@ load COMMON_DIR + "handle_command_line_parameters.crb"
 load COMMON_DIR + "just_find_it.crb"
 load COMMON_DIR + "usage.crb"
 load COMMON_DIR + "generate_module_recipes.crb"
+load COMMON_DIR + "replacement_for_module_line.crb"
 
 class Justprep
   attr_accessor :module_names
@@ -43,25 +44,6 @@ class Justprep
   def initialize
     handle_command_line_parameters  # may terminate the process
     @module_names = []
-  end
-
-
-  # Inserts the module_name into the Array of module_names
-  # Returns a string that defines the variable for the path to the module
-  def replacement_for_module_line(line_number, a_string)
-    parts           = a_string.split(" ")
-    path_to_module  = parts[1..].join(" ")
-
-    unless File.exist?(path_to_module)
-      error_file_does_not_exist(line_number, a_string)
-      exit(1)
-    end
-
-    parts           = path_to_module.split("/")
-    module_name     = parts[parts.size-2]
-    @module_names  << module_name
-
-    return "module_#{module_name} := \"#{path_to_module}\""
   end
 
 
@@ -78,67 +60,71 @@ class Justprep
     out_file.puts "# <<< #{module_filename}\n"
 
     return nil
+  end
+
+
+  # Main function called from executable
+  def execute
+  in_filename  = just_find_it
+
+  if in_filename.nil?
+      STDERR.puts "WARNING: JUSTPREP_FILENAME_IN Not Found: #{JUSTPREP_FILENAME_IN}"
+      exit(0)
     end
 
+  out_filename  = File.dirname(in_filename) + "/" + JUSTPREP_FILENAME_OUT
 
-    # Main function called from executable
-    def execute
-    in_filename  = just_find_it
+  in_file   = File.open(in_filename,  "r")
+  out_file  = File.open(out_filename, "w")
 
-    if in_filename.nil?
-        STDERR.puts "WARNING: JUSTPREP_FILENAME_IN Not Found: #{JUSTPREP_FILENAME_IN}"
-        exit(0)
+  line_number = 0
+
+  in_file.readlines.map{|x| x.chomp}.each do |a_line|
+    line_number += 1
+
+    parts = a_line.to_s.split(" ")
+
+    if 0 == parts.size
+      out_file.puts
+      next
       end
 
-    out_filename  = File.dirname(in_filename) + "/" + JUSTPREP_FILENAME_OUT
+    # NOTE: Leading spaces are not allowed.  The keywords
+    #       MUST be complete left-justified.
+    #
+    if JUSTPREP_KEYWORDS.include?(parts.first.downcase)
+      out_file.puts "# #{a_line}"
 
-    in_file   = File.open(in_filename,  "r")
-    out_file  = File.open(out_filename, "w")
+      glob_filename = expand_file_path(parts[1..parts.size].join(" "))
 
-    line_number = 0
+      module_filenames = Dir.glob(glob_filename)
 
-    in_file.readlines.map{|x| x.chomp}.each do |a_line|
-      line_number += 1
+      if 0 == module_filenames.size
+        error_file_does_not_exist(line_number, a_line)
+        exit(1)
+      end
 
-      parts = a_line.to_s.split(" ")
-
-      if 0 == parts.size
-        out_file.puts
-        next
-        end
-
-      # NOTE: Leading spaces are not allowed.  The keywords
-      #       MUST be complete left-justified.
-      #
-      if JUSTPREP_KEYWORDS.include?(parts.first.downcase)
-        out_file.puts "# #{a_line}"
-
-        glob_filename = expand_file_path(parts[1..parts.size].join(" "))
-
-        module_filenames = Dir.glob(glob_filename)
-
-        if 0 == module_filenames.size
+      module_filenames.each do |module_filename|
+        if File.exist?(module_filename)
+          include_content_from(out_file, module_filename)
+        else
           error_file_does_not_exist(line_number, a_line)
           exit(1)
         end
-
-        module_filenames.each do |module_filename|
-          if File.exist?(module_filename)
-            include_content_from(out_file, module_filename)
-          else
-            error_file_does_not_exist(line_number, a_line)
-            exit(1)
-          end
-        end
-      elsif JUSTPREP_MODULE_KEYWORD == parts.first.downcase
-        out_file.puts replacement_for_module_line(line_number, a_line)
-      else
-        out_file.puts a_line
       end
-    end # in_file.readlines ...
+    elsif JUSTPREP_MODULE_KEYWORD == parts.first.downcase
+      result_array  = replacement_for_module_line(line_number, a_line)
+      @module_names << result_array.first
+      out_file.puts result_array.last
+    else
+      out_file.puts a_line
+    end
+  end # in_file.readlines ...
 
-    out_file.puts generate_module_recipes(@module_names)
+  out_file.puts generate_module_recipes(@module_names)
 
-    out_file.close
-    end # def execute
+  out_file.close
+  end # def
+
+
 end # class Justprep
