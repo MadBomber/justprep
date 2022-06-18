@@ -1,0 +1,27 @@
+# .../ruby/lib/justprep/common/generate_module_recipes.crb
+
+# Given an Array of Strings representing the fake
+# module names it returns a String to be appended
+# to the generated justfile.
+#
+# Input:
+#   module_names .... Array(String) fake module names
+#
+# Output:
+#   recipes ... String
+#
+def generate_module_recipes(module_names)
+  recipes = ""
+
+  module_names.each do |mod_name|
+    recipes += "
+
+# Module #{mod_name}
+@#{mod_name} what='' args='':
+  just -f {{module_#{mod_name}}} {{what}} {{args}}
+
+"
+  end
+
+  return recipes
+end

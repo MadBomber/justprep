@@ -27,22 +27,6 @@ class Justprep
     @module_names = Array(String).new
   end
 
-  def generate_module_recipes
-    recipes = ""
-
-    @module_names.each do |mod_name|
-      recipes += "
-
-# Module #{mod_name}
-@#{mod_name} what='' args='':
-  just -f {{module_#{mod_name}}} {{what}} {{args}}
-
-"
-    end
-
-    return recipes
-  end
-
   # Inserts the module_name into the Array of module_names
   # Returns a string that defines the variable for the path to the module
   def replacement_for_module_line(line_number, a_string)
@@ -129,7 +113,7 @@ class Justprep
       end
     end # in_file.readlines ...
 
-    out_file.puts generate_module_recipes
+    out_file.puts generate_module_recipes(@module_names)
 
     out_file.close
   end # def execute

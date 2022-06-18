@@ -90,4 +90,22 @@ class CommonTest < Minitest::Test
     assert usage_text.to_s.includes? "Casey Rodarmor"
     assert usage_text.to_s.includes? "Greg Lutostanski"
   end
+
+
+  def test_generate_module_recipes
+    module_names = ["my_mod"]
+
+    expected  = "
+
+# Module my_mod
+@my_mod what='' args='':
+  just -f {{module_my_mod}} {{what}} {{args}}
+
+"
+
+    results   = generate_module_recipes(module_names)
+
+    assert_equal results, expected
+  end
+
 end

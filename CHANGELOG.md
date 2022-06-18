@@ -1,5 +1,8 @@
 ## Change Log
 
+### 1.2.3 The MODual SWUAD
+   * Added support for the fake module convention
+
 ### 1.2.2.1 Lights, Camera, Action!
    * corrected the github release action script
    

@@ -35,6 +35,7 @@ load COMMON_DIR + "expand_file_path.crb"
 load COMMON_DIR + "handle_command_line_parameters.crb"
 load COMMON_DIR + "just_find_it.crb"
 load COMMON_DIR + "usage.crb"
+load COMMON_DIR + "generate_module_recipes.crb"
 
 class Justprep
   attr_accessor :module_names
@@ -42,23 +43,6 @@ class Justprep
   def initialize
     handle_command_line_parameters  # may terminate the process
     @module_names = []
-  end
-
-
-  def generate_module_recipes
-    recipes = ""
-
-    @module_names.each do |mod_name|
-      recipes += <<~EOS
-
-        # Module #{mod_name}
-        @#{mod_name} what='' args='':
-          just -f {{module_#{mod_name}}} {{what}} {{args}}
-
-      EOS
-    end
-
-    return recipes
   end
 
 
@@ -153,7 +137,7 @@ class Justprep
       end
     end # in_file.readlines ...
 
-    out_file.puts generate_module_recipes
+    out_file.puts generate_module_recipes(@module_names)
 
     out_file.close
     end # def execute

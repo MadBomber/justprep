@@ -28,19 +28,4 @@ class ModuleTest < Minitest::Test
   end
 
 
-  def test_generate_module_recipes
-    @jp.module_names << 'my_mod'
-
-    expected  = <<~EOS
-
-      # Module my_mod
-      @my_mod what='' args='':
-        just -f {{module_my_mod}} {{what}} {{args}}
-
-    EOS
-
-    results   = @jp.generate_module_recipes
-
-    assert_equal results, expected
-  end
 end
