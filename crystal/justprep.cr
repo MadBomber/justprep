@@ -14,7 +14,11 @@
 # JUSTPREP_FILENAME_IN  ... main.just
 # JUSTPREP_FILENAME_OUT ... justfile
 # JUSTPREP_KEYWORDS     ... 'import include require with'
-# JUSTPREP_MODULE_KEYWORD . module
+# JUSTPREP_MODULE_KEYWORD . 'module'
+#
+# NOTE:
+#   JUSTPREP_KEYWORDS  ** CANNOT ** include the value for
+#   JUSTPREP_MODULE_KEYWORD
 #
 
 IMPLEMENTATION = "Crystal"
@@ -28,6 +32,15 @@ class Justprep
   end
 
   def execute
+    if JUSTPREP_KEYWORDS.includes?(JUSTPREP_MODULE_KEYWORD)
+      STDERR.puts
+      STDERR.puts "ERROR: Environment Variable Configuration Problem"
+      STDERR.puts "       JUSTPREP_KEYWORDS cannot include the same value"
+      STDERR.puts "       as the JUSTPREP_MODULE_KEYWORD"
+      STDERR.puts
+      exit(1)
+    end
+
     in_filename = just_find_it
 
     if in_filename.nil?
