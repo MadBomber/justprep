@@ -3,6 +3,24 @@
 # Inserts the module_name into the Array of module_names
 # Returns a string that defines the variable for the path to the module
 #
+# This method replaces a source line that looks like this:
+#
+#   module aaa path/to/modules/justfile
+#
+# with a line that looks like this:
+#
+#   module_aaa := "path/to/modules/justfile"
+#
+# where "aaa" is the module name.
+#
+# Limitations:
+#
+#   module_name can not have a space.  Only :alphanumberic: characters
+#   and the underscore character are valid.
+#
+#   The "path/to/modules/justfile" must exist.  Otherwise an error
+#   message is generated.
+#
 # Input:
 #   line_numer .... Integer the line number in the source file
 #   a_string ...... String the line from the source file
@@ -14,15 +32,19 @@
 #
 def replacement_for_module_line(line_number, a_string)
   parts = a_string.split(" ")
-  path_to_module = parts[1..].join(" ")
+
+  if parts.size < 3
+    error_syntax(line_number, a_string)
+    exit(1)
+  end
+
+  module_name     = parts[1]
+  path_to_module  = parts[2..].join(" ")
 
   unless File.exists?(path_to_module)
     error_file_does_not_exist(line_number, a_string)
     exit(1)
   end
-
-  parts = path_to_module.split("/")
-  module_name = parts[parts.size - 2]
 
   return [module_name, "module_#{module_name} := \"#{path_to_module}\""]
 end

@@ -311,8 +311,8 @@ Testing fake modules Crystal version...
 exit code: 0
 # justprep/test/module_good.just
 
-module_aaa := "modules/aaa/justfile"
-module_bbb := "modules/bbb/justfile"
+module_aaa := "modules/aaa.just"
+module_bbb := "modules/bbb.just"
 
 # Show Available Recipes
 @list:
@@ -335,8 +335,8 @@ module_bbb := "modules/bbb/justfile"
 
 ERROR: File Does Not Exist
    |
- 4 | module /path/to/no_where/justfile
-   |        ^^^^^^^^^^^^^^^^^^^^^^^^^^
+ 4 | module ccc /path/to/no_where/justfile
+   |            ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 exit code: 1
 Done.
@@ -349,8 +349,8 @@ Testing fake modules Ruby version...
 exit code: 0
 # justprep/test/module_good.just
 
-module_aaa := "modules/aaa/justfile"
-module_bbb := "modules/bbb/justfile"
+module_aaa := "modules/aaa.just"
+module_bbb := "modules/bbb.just"
 
 # Show Available Recipes
 @list:
@@ -373,8 +373,8 @@ module_bbb := "modules/bbb/justfile"
 
 ERROR: File Does Not Exist
    |
- 4 | module /path/to/no_where/justfile
-   |        ^^^^^^^^^^^^^^^^^^^^^^^^^^
+ 4 | module ccc /path/to/no_where/justfile
+   |            ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 exit code: 1
 # justprep/test/module_bad.just

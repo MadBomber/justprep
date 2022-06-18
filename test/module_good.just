@@ -1,7 +1,7 @@
 # justprep/test/module_good.just
 
-module modules/aaa/justfile
-module modules/bbb/justfile
+module aaa modules/aaa.just
+module bbb modules/bbb.just
 
 # Show Available Recipes
 @list:
