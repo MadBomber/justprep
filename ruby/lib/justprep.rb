@@ -50,66 +50,64 @@ class Justprep
 
   # Main function called from executable
   def execute
-  in_filename  = just_find_it
+    in_filename  = just_find_it
 
-  if in_filename.nil?
+    if in_filename.nil?
       STDERR.puts "WARNING: JUSTPREP_FILENAME_IN Not Found: #{JUSTPREP_FILENAME_IN}"
       exit(0)
     end
 
-  out_filename  = File.dirname(in_filename) + "/" + JUSTPREP_FILENAME_OUT
+    out_filename  = File.dirname(in_filename) + "/" + JUSTPREP_FILENAME_OUT
 
-  in_file   = File.open(in_filename,  "r")
-  out_file  = File.open(out_filename, "w")
+    in_file   = File.open(in_filename,  "r")
+    out_file  = File.open(out_filename, "w")
 
-  line_number = 0
+    line_number = 0
 
-  in_file.readlines.map{|x| x.chomp}.each do |a_line|
-    line_number += 1
+    in_file.readlines.map{|x| x.chomp}.each do |a_line|
+      line_number += 1
 
-    parts = a_line.to_s.split(" ")
+      parts = a_line.to_s.split(" ")
 
-    if 0 == parts.size
-      out_file.puts
-      next
+      if 0 == parts.size
+        out_file.puts
+        next
       end
 
-    # NOTE: Leading spaces are not allowed.  The keywords
-    #       MUST be complete left-justified.
-    #
-    if JUSTPREP_KEYWORDS.include?(parts.first.downcase)
-      out_file.puts "# #{a_line}"
+      # NOTE: Leading spaces are not allowed.  The keywords
+      #       MUST be complete left-justified.
+      #
+      if JUSTPREP_KEYWORDS.include?(parts.first.downcase)
+        out_file.puts "# #{a_line}"
 
-      glob_filename = expand_file_path(parts[1..parts.size].join(" "))
+        glob_filename = expand_file_path(parts[1..parts.size].join(" "))
 
-      module_filenames = Dir.glob(glob_filename)
+        module_filenames = Dir.glob(glob_filename)
 
-      if 0 == module_filenames.size
-        error_file_does_not_exist(line_number, a_line)
-        exit(1)
-      end
-
-      module_filenames.each do |module_filename|
-        if File.exist?(module_filename)
-          include_content_from(out_file, module_filename)
-        else
+        if 0 == module_filenames.size
           error_file_does_not_exist(line_number, a_line)
           exit(1)
         end
+
+        module_filenames.each do |module_filename|
+          if File.exist?(module_filename)
+            include_content_from(out_file, module_filename)
+          else
+            error_file_does_not_exist(line_number, a_line)
+            exit(1)
+          end
+        end
+      elsif JUSTPREP_MODULE_KEYWORD == parts.first.downcase
+        result_array  = replacement_for_module_line(line_number, a_line)
+        @module_names << result_array.first
+        out_file.puts result_array.last
+      else
+        out_file.puts a_line
       end
-    elsif JUSTPREP_MODULE_KEYWORD == parts.first.downcase
-      result_array  = replacement_for_module_line(line_number, a_line)
-      @module_names << result_array.first
-      out_file.puts result_array.last
-    else
-      out_file.puts a_line
-    end
-  end # in_file.readlines ...
+    end # in_file.readlines ...
 
-  out_file.puts generate_module_recipes(@module_names)
+    out_file.puts generate_module_recipes(@module_names)
 
-  out_file.close
+    out_file.close
   end # def
-
-
 end # class Justprep
