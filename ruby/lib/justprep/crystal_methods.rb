@@ -18,3 +18,9 @@ class String
   alias_method :ends_with?,   :end_with?
   alias_method :includes?,    :include?
 end
+
+class File
+  class << self
+    alias_method :read_lines, :readlines
+  end
+end

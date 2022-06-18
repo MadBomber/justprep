@@ -37,6 +37,7 @@ load COMMON_DIR + "just_find_it.crb"
 load COMMON_DIR + "usage.crb"
 load COMMON_DIR + "generate_module_recipes.crb"
 load COMMON_DIR + "replacement_for_module_line.crb"
+load COMMON_DIR + "include_content_from.crb"
 
 class Justprep
   attr_accessor :module_names
@@ -44,22 +45,6 @@ class Justprep
   def initialize
     handle_command_line_parameters  # may terminate the process
     @module_names = []
-  end
-
-
-  # single-level inclusion
-  def include_content_from(out_file, module_filename)
-    module_file = File.open(module_filename, "r")
-
-    out_file.puts "\n# >>> #{module_filename}"
-
-    module_file.readlines.each do |m_line|
-      out_file.write m_line
-      end
-
-    out_file.puts "# <<< #{module_filename}\n"
-
-    return nil
   end
 
 

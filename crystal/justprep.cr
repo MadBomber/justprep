@@ -27,19 +27,6 @@ class Justprep
     @module_names = Array(String).new
   end
 
-  # single-level inclusion
-  def include_content_from(out_file, module_filename)
-    out_file.puts "\n# >>> #{module_filename}"
-
-    File.read_lines(module_filename).each do |m_line|
-      out_file.puts m_line
-    end
-
-    out_file.puts "# <<< #{module_filename}\n"
-
-    return nil
-  end
-
   def execute
     in_filename = just_find_it
 

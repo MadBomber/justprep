@@ -120,4 +120,9 @@ class CommonTest < Minitest::Test
     assert_equal module_name, "my_mod"
     assert_equal module_filename, expected
   end
+
+
+  def test_include_content_from
+    skip "sinple function but should still be tested"
+  end
 end
