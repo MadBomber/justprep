@@ -26,11 +26,14 @@ static := "false"
 extra_build_args := if join(os(), static) == "linux/true" { "--static" } else { "" }
 
 # Builds the crystal version of justprep
-build: _make_bin
+build: _make_bin install_shards
   crystal build {{extra_build_args}} --no-debug --release -p -o bin/justprep \
     {{repo_root}}/ruby/lib/justprep/common/*.crb \
     justprep.cr
 
+# Run `shards install`
+@install_shards:
+  shards install
 
 # Install the justprep executable in ~/bin
 install where="/usr/local/bin": build
