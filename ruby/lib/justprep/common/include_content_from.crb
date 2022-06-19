@@ -1,0 +1,24 @@
+# .../ruby/lib/justprep/common/def include_content_from.crb
+
+
+# single-level inclusion
+#
+# Input:
+#   out_file .......... A File pointer for String output
+#   module_filename ... String The name of the file to be included
+#
+# Output:
+#   nil .... This is a function without specific return value
+#
+def include_content_from(out_file, module_filename)
+  out_file.puts "\n# >>> #{module_filename}"
+
+  File.read_lines(module_filename).each do |m_line|
+    out_file.puts m_line
+  end
+
+  out_file.puts "# <<< #{module_filename}\n"
+
+  return nil
+end
+

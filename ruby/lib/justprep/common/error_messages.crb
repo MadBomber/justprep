@@ -18,6 +18,11 @@ def error_file_does_not_exist(line_number, a_line)
   STDERR.print (" "*line_out.size)+"|"
 
   x              = a_line.index(" ")
+
+  if a_line.starts_with?(JUSTPREP_MODULE_KEYWORD)
+    x              = a_line.index(" ", x.nil? ? 0 : x + 1) # because Crystal thinks x could be nil
+  end
+
   begin_filename = x.nil? ? a_line.size + 2 : x + 2
   end_filename   = a_line.size
   len_filename   = end_filename - begin_filename + 1
@@ -29,3 +34,20 @@ def error_file_does_not_exist(line_number, a_line)
 
   return nil
 end
+
+
+def error_syntax(line_number, a_line)
+  STDERR.puts
+  STDERR.puts "ERROR: Syntax Problem"
+
+  # Crystal types thinks line_number can be nil or Int32
+  line_out = sprintf("% d ", line_number.nil? ? 0 : line_number)
+  STDERR.puts (" "*line_out.size)+"|"
+  STDERR.puts "#{line_out}| #{a_line}"
+  STDERR.print (" "*line_out.size)+"| "
+  STDERR.puts "^"*(a_line.size)
+  STDERR.puts
+
+  return nil
+end
+

@@ -136,6 +136,7 @@ exit code: 0
 @four:
   echo "glob 4444"
 # <<< glob_dir/four/four.just
+
 cat: glob_dir/expected_justfile: No such file or directory
 
 ERROR: File Does Not Exist
@@ -192,6 +193,7 @@ exit code: 0
 @six:
   echo "glob 666666"
 # <<< glob_dir/two/two.just
+
 
 ERROR: File Does Not Exist
    |
@@ -250,6 +252,7 @@ sub_envars:
 sub_envars:
   echo "it worked"
 # <<< /Users/dewayne/temp.just
+
 Done.
 
 +------+
@@ -292,4 +295,89 @@ sub_envars:
 sub_envars:
   echo "it worked"
 # <<< /Users/dewayne/temp.just
+
+Done.
+
+########################
+# testing fake modules #
+########################
+
+
++---------+
+| Crystal |
++---------+
+
+Testing fake modules Crystal version...
+exit code: 0
+# justprep/test/module_good.just
+
+module_aaa := "modules/aaa.just"
+module_bbb := "modules/bbb.just"
+
+# Show Available Recipes
+@list:
+  just --list
+
+# Show All Available Recipes including the Modules
+@list_all: list aaa bbb
+
+
+# Module aaa
+@aaa what='' args='':
+  just -f {{module_aaa}} {{what}} {{args}}
+
+
+
+# Module bbb
+@bbb what='' args='':
+  just -f {{module_bbb}} {{what}} {{args}}
+
+
+ERROR: File Does Not Exist
+   |
+ 4 | module ccc /path/to/no_where/justfile
+   |            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+exit code: 1
+Done.
+
++------+
+| Ruby |
++------+
+
+Testing fake modules Ruby version...
+exit code: 0
+# justprep/test/module_good.just
+
+module_aaa := "modules/aaa.just"
+module_bbb := "modules/bbb.just"
+
+# Show Available Recipes
+@list:
+  just --list
+
+# Show All Available Recipes including the Modules
+@list_all: list aaa bbb
+
+
+# Module aaa
+@aaa what='' args='':
+  just -f {{module_aaa}} {{what}} {{args}}
+
+
+
+# Module bbb
+@bbb what='' args='':
+  just -f {{module_bbb}} {{what}} {{args}}
+
+
+ERROR: File Does Not Exist
+   |
+ 4 | module ccc /path/to/no_where/justfile
+   |            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+exit code: 1
+# justprep/test/module_bad.just
+
+# the path does not exist
 Done.

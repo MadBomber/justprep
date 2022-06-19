@@ -48,6 +48,20 @@ cp ./temp.just $HOME
 source ./envar-test-cr.s
 source ./envar-test-rb.s
 
+
+echo
+echo "########################"
+echo "# testing fake modules #"
+echo "########################"
+echo
+
+source ./module-test-cr.s
+source ./module-test-rb.s
+
+
+###################################################
+## End of Tests Cleanup
+
 rm -f ~/temp.just
 
 # restore the original system envar ...

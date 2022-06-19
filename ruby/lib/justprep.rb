@@ -13,6 +13,11 @@
 # JUSTPREP_FILENAME_IN  ... main.just
 # JUSTPREP_FILENAME_OUT ... justfile
 # JUSTPREP_KEYWORDS     ... 'import include require with'
+# JUSTPREP_MODULE_KEYWORD . 'module'
+#
+# NOTE:
+#   JUSTPREP_KEYWORDS  ** CANNOT ** include the value for
+#   JUSTPREP_MODULE_KEYWORD
 #
 
 IMPLEMENTATION  = "Ruby"
@@ -34,37 +39,36 @@ load COMMON_DIR + "expand_file_path.crb"
 load COMMON_DIR + "handle_command_line_parameters.crb"
 load COMMON_DIR + "just_find_it.crb"
 load COMMON_DIR + "usage.crb"
+load COMMON_DIR + "generate_module_recipes.crb"
+load COMMON_DIR + "replacement_for_module_line.crb"
+load COMMON_DIR + "include_content_from.crb"
 
 class Justprep
+  attr_accessor :module_names
+
   def initialize
     handle_command_line_parameters  # may terminate the process
+    @module_names = []
+  end
+
+
+  # Main function called from executable
+  def execute
+    if JUSTPREP_KEYWORDS.includes?(JUSTPREP_MODULE_KEYWORD)
+      STDERR.puts
+      STDERR.puts "ERROR: Environment Variable Configuration Problem"
+      STDERR.puts "       JUSTPREP_KEYWORDS cannot include the same value"
+      STDERR.puts "       as the JUSTPREP_MODULE_KEYWORD"
+      STDERR.puts
+      exit(1)
     end
 
-
-  # single-level inclusion
-  def include_content_from(out_file, module_filename)
-    module_file = File.open(module_filename, "r")
-
-    out_file.puts "\n# >>> #{module_filename}"
-
-    module_file.readlines.each do |m_line|
-      out_file.write m_line
-      end
-
-    out_file.puts "# <<< #{module_filename}\n"
-
-    return nil
-    end
-
-
-    # Main function called from executable
-    def execute
     in_filename  = just_find_it
 
     if in_filename.nil?
-        STDERR.puts "WARNING: JUSTPREP_FILENAME_IN Not Found: #{JUSTPREP_FILENAME_IN}"
-        exit(0)
-      end
+      STDERR.puts "WARNING: JUSTPREP_FILENAME_IN Not Found: #{JUSTPREP_FILENAME_IN}"
+      exit(0)
+    end
 
     out_filename  = File.dirname(in_filename) + "/" + JUSTPREP_FILENAME_OUT
 
@@ -81,7 +85,7 @@ class Justprep
       if 0 == parts.size
         out_file.puts
         next
-        end
+      end
 
       # NOTE: Leading spaces are not allowed.  The keywords
       #       MUST be complete left-justified.
@@ -101,16 +105,22 @@ class Justprep
         module_filenames.each do |module_filename|
           if File.exist?(module_filename)
             include_content_from(out_file, module_filename)
-        else
+          else
             error_file_does_not_exist(line_number, a_line)
-          exit(1)
+            exit(1)
+          end
         end
-        end
+      elsif JUSTPREP_MODULE_KEYWORD == parts.first.downcase
+        result_array  = replacement_for_module_line(line_number, a_line)
+        @module_names << result_array.first
+        out_file.puts result_array.last
       else
         out_file.puts a_line
       end
     end # in_file.readlines ...
 
+    out_file.puts generate_module_recipes(@module_names)
+
     out_file.close
-    end # def execute
+  end # def
 end # class Justprep

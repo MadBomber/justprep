@@ -5,7 +5,7 @@
 # as kernel-level methods.  Because that is the
 # way that the Crystal implementation is designed.
 
-require "minitest/autorun"
+require_relative "test_helper"
 
 IMPLEMENTATION = "CrystalRuby"
 
@@ -18,6 +18,7 @@ class CommonTest < Minitest::Test
     refute_nil JUSTPREP_FILENAME_IN
     refute_nil JUSTPREP_FILENAME_OUT
     refute_nil JUSTPREP_KEYWORDS
+    refute_nil JUSTPREP_MODULE_KEYWORD
   end
 
 
@@ -88,5 +89,42 @@ class CommonTest < Minitest::Test
     assert usage_text.to_s.includes? "Dewayne VanHoozer"
     assert usage_text.to_s.includes? "Casey Rodarmor"
     assert usage_text.to_s.includes? "Greg Lutostanski"
+  end
+
+
+  def test_generate_module_recipes
+    module_names = ["my_mod"]
+
+    expected  = "
+
+# Module my_mod
+@my_mod what='' args='':
+  just -f {{module_my_mod}} {{what}} {{args}}
+
+"
+
+    results   = generate_module_recipes(module_names)
+
+    assert_equal results, expected
+  end
+
+
+  def test_replacement_for_module_line
+    expected_module_name = "my_mod"
+
+    source    = "module #{expected_module_name} #{ENV['RR']}/ruby/test/my_mod/justfile"
+    expected  = "module_#{expected_module_name} := \"my_mod/justfile\""
+
+    module_name, module_filename = replacement_for_module_line(999, source)
+
+    module_filename.gsub!(__dir__ + '/', '')
+
+    assert_equal module_name, expected_module_name
+    assert_equal module_filename, expected
+  end
+
+
+  def test_include_content_from
+    skip "sinple function but should still be tested"
   end
 end

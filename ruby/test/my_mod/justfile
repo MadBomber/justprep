@@ -1,0 +1,9 @@
+# ..../ruby/test/my_mode/justfile
+
+@_my_mod:
+  echo "Module my_mod"
+  just --list
+
+# Say Hello
+@hello who='world':
+  echo "Hello {{who}}"

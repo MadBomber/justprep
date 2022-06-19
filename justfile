@@ -84,24 +84,26 @@ ruby_unit_test:
 
 
 # Crystal unit tests on common Crystal/Ruby code
-crystal_unit_test:
-  #!/usr/bin/env bash
-  original_name=$JUSTPREP_FILENAME_IN
-  export JUSTPREP_FILENAME_IN=main.just
+@crystal_unit_test:
+  echo "disabled"
 
-  cd $RR/crystal
-
-  echo "Crystal ..."
-
-  crystal run \
-    ../ruby/lib/justprep/common/*.crb \
-    ../ruby/test/common_test.rb |\
-  fgrep tests |\
-  fgrep failures |\
-  fgrep errors |\
-  fgrep skips
-
-  export JUSTPREP_FILENAME_IN=$original_name
+  #### !/usr/bin/env bash
+  #### riginal_name=$JUSTPREP_FILENAME_IN
+  #### xport JUSTPREP_FILENAME_IN=main.just
+  ####
+  #### d $RR/crystal
+  ####
+  #### cho "Crystal ..."
+  ####
+  #### rystal run \
+  ####  ../ruby/lib/justprep/common/*.crb \
+  ####  ../ruby/test/common_test.rb |\
+  #### grep tests |\
+  #### grep failures |\
+  #### grep errors |\
+  #### grep skips
+  ####
+  #### xport JUSTPREP_FILENAME_IN=$original_name
 
 
 # Run the unit tests on the common methods in both implementations
