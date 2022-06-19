@@ -4,6 +4,9 @@ https://github.com/casey/just
 
 Please forgive the disorganization - thie README is still under development.
 
+You might useful documentation more quickly in the project's
+[Github wiki](https://github.com/MadBomber/justprep/wiki)
+
 Casey's `just` utility is such a useful tool; but, it has one thing that bothered me - the inability to inherently include recipes from other files.  For those of us who work on many projects in parallel the ability to share recipes (effective code reuse / modularization) is an important feature.  Its advantages are:
 
 * provides for smaller more easily maintained files
@@ -22,14 +25,15 @@ HOWEVER, as of version 0.11.2+ `just` now supports duplicate recipes where the l
 
 - [System Environment Variables](#system-environment-variables)
     + [JUSTPREP_KEYWORDS](#justprep_keywords)
+    + [JUSTPREP_MODULE_KEYWORD](#justprep_module_keyword)
     + [JUSTPREP_FILENAME_IN](#justprep_filename_in)
     + [JUSTPREP_FILENAME_OUT](#justprep_filename_out)
 - [Install](#install)
-    + [just and the RubyGem justprep](#just-and-the-rubygem-justprep)
-    + [Building the Crystal Version](#building-the-crystal-version)
-        * [Download the latest Release](#download-the-latest-release)
-        * [Default Install to /usr/local/bin](#default-install-to-usrlocalbin)
-        * [Custom Install Directory](#custom-install-directory)
+    + [RubyGem](#rubygem)
+    + [Crystal version](#crystal-version)
+        * [With Homebrew](#with-homebrew)
+        * [Precompiled binaries](#precompiled-binaries)
+        * [From Source](#from-source)
 - [Shell Configuration and My Conventions](#shell-configuration-and-my-conventions)
     + [Simple Configuration](#simple-configuration)
     + [My BASH Shell Configuration](#my-bash-shell-configuration)
@@ -51,7 +55,10 @@ HOWEVER, as of version 0.11.2+ `just` now supports duplicate recipes where the l
 - [Testing](#testing)
 * [Organization](#organization)
 - [Ruby Gem Version](#ruby-gem-version)
-- [Crystal Version](#crystal-version)
+- [Crystal Version](#crystal-version-1)
+* [Fake Module Convention](#fake-module-convention)
+    + [Example without `justprep`](#example-without-justprep)
+    + [Example using `justprep`](#example-using-justprep)
 
 <!-- /MarkdownTOC -->
 
@@ -68,6 +75,18 @@ THis is a string of one or more keywords to use to designate a file to be includ
 The default is 'include import require with' where each keyword is a designation in the input file for an inclusionary action on a designated file path.  You do not have to use all or any.  Personnally I've pretty much standardized on "with" as my perfered keyword.  You may use whatever makes you happy.  Nor do you have to use the suggested ones in my list.  Make up you own if you like.
 
 Why does just prep support more than one inclusionary keyword marker?  Well, each computer language has its own syntax flavor.  The examples above or consistent with Ruby, Java-ish, Ada, Perl and others.  Use what feels right to you.
+
+
+### JUSTPREP_MODULE_KEYWORD
+
+The default is "module" however you can use whatever seems right to you.  Do not use the same keyword as any of the inclusionary keywords defined in JUSTPREP_KEYWORDS.  That would cause problems.
+
+TODO: generate an error if JUSTPREP_MODULE_KEYWORD value is included in the value for JUSTPREP_KEYWORDS.
+
+This keyword provides different functionality than the inclusionary keywords defined by the JUSTPREP_KEYWORDS system environment variable.  The `justprep` utility implements a convention that involves the use of specific variable names and generated recipes to implement a "fake module" system.  This is a stop-gap functionality created to explore how modules could be used.
+
+More detail on the Fake Module Convention is TBD.
+
 
 ### JUSTPREP_FILENAME_IN
 
@@ -412,7 +431,42 @@ This repository contains two versions of the `justprep` pre-processor.  One is i
 TODO: Put stuff about the Ruby Gem here ...
 `gem install justprep`
 
+The file crystal_methods.rb aliases Ruby methods for various classes to match the method names that are in the Crystal library.  This allows for the Ruby and Crystal implementations to share common code files.
+
 ## Crystal Version
 
 TODO: Put stuff about the Crystal Version here ...
-TODO: Create a brew formula
+
+
+# Fake Module Convention
+
+This is a convention which is usable in plain justfiles that does not require the use of justpre; however, justprep implements the convention in a why that simplifies its useage.
+
+In a nutshell any `just` recipe can invoke the `just` utility with the `-f` option to execute against a different justfile along with recipes located in that `justfile`.
+
+### Example without `justprep`
+
+You could have a recipe that looks like this:
+
+```bash
+aaa recipe='':
+  just -f path/to/module/aaa/justfile {{recipe}}
+```
+
+Treating `aaa` like a module name you can then invoke the other recipe like this:
+`just aaa xyzzy`
+
+### Example using `justprep`
+
+What `justprep` does is allow you to have lines in your `main.just` file that look like this:
+
+```bash
+module aaa path/to/module/aaa/justfile
+module bbb /path/to/modules/bbb.just
+```
+
+`justprep` will replace this "module" line with a variable definition that is assigned the value of the path to the module's `justfile`.  It then appends to the end of the `main.just` file the methods for each of the modules defined.  These new methods are one per module defined.  They invoke the `just -f {{module_justfile_path}} {{recipe}}`
+
+A useful recipe to add to your `main.just` is a `list_all` method to list all of the recipes that are in the existing `main.just` file and of the modules that have been defined.
+
+TODO: Reorganize this README.md file into a github wiki
