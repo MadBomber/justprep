@@ -8,7 +8,9 @@ A pre-processor to the just command line utility
 By Dewayne VanHoozer <dvanhoozer@gmail.com>
 
 USAGE:
-  justprep [flags] && just
+  justprep [flags] && $JUSTPREP_FOR
+
+  Supports both the 'just' and 'run' CLI task runners.
 
 FLAGS:
       --version   Shows the current version
@@ -18,26 +20,23 @@ DESCRIPTION:
   Looks for a file named #{JUSTPREP_FILENAME_IN} in the current
   directory hierarchy.  If found it replaces all lines that
   have the keywords (#{JUSTPREP_KEYWORDS.join(", ")}) followed
-  by file path with the contents of the specified file.
+  by a file path with the contents of the specified file.
+
+  if it finds a line that begins with the module keyword
+  (#{JUSTPREP_MODULE_KEYWORD}) in sets up a fake module
+  system consistent with the target CLI task runner #{JUSTPREP_FOR}.
 
 SYSTEM ENVIRONMENT VARIABLES:
                             Default Value
-  JUSTPREP_FILENAME_IN .... main.just
-  JUSTPREP_FILENAME_OUT ... justfile
+  JUSTPREP_FOR ............ 'just'      | 'run'
+  JUSTPREP_FILENAME_IN .... 'main.just' | 'main.run'
+  JUSTPREP_FILENAME_OUT ... 'justfile'  | 'Runfile'
   JUSTPREP_KEYWORDS ....... 'import include require with'
+  JUSTPREP_MODULE_KEYWORD . 'module'
 
 SUGGESTION:
   Create an alias for your command shell. For example
-    alias jj='justprep && just'
-
-THANKS TO:
-  Casey Rodarmor <casey@rodarmor.com>
-    for Just because just is just a handy utility with just an
-    odd name but an extreamly useful product. :)
-
-  Greg Lutostanski <greg.luto@gmail.com>
-    for the homebrew formula and the github actions to compile
-    a new Crystal release.
+    alias jj='justprep && $JUSTPREP_FOR'
 
 "
   puts usage_text

@@ -1,0 +1,64 @@
+# .../ruby/lib/justprep/common/generate_module_tasks.crb
+
+# Given an Array of Strings representing the fake
+# module names it returns a String to be appended
+# to the generated justfile.
+#
+# Input:
+#   module_names .... Array(String) fake module names
+#
+# Output:
+#   tasks ... String
+#
+def generate_module_tasks(module_names)
+  if just?
+    tasks = create_just_tasks(module_names)
+  elsif using_run?
+    tasks = create_run_tasks(module_names)
+  else
+    tasks = "# Do not know how to make modules for #{JUSTPREP_FOR}"
+  end
+
+  return tasks
+end
+
+
+def create_just_tasks(module_names)
+  tasks = ""
+
+  module_names.each do |mod_name|
+    tasks += "
+
+# Module #{mod_name}
+@#{mod_name} what='' args='':
+  #{JUSTPREP_FOR} #{FILENAME_OPTION} {{module_#{mod_name}}} {{what}} {{args}}
+
+"
+  end
+
+  return tasks
+end
+
+
+def create_run_tasks(module_names)
+  tasks = ""
+
+  module_names.each do |mod_name|
+    tasks += "
+
+##
+# Module #{mod_name}
+# Encapsulates additional tasks
+#{mod_name}:
+  #{JUSTPREP_FOR} #{FILENAME_OPTION} ${module_#{mod_name}} ${@}
+
+"
+  end
+
+  return tasks
+end
+
+
+
+
+

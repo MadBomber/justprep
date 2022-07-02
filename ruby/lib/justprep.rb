@@ -6,12 +6,15 @@
 # Desc: A preprocessor to "just" cli tool
 # By:   Dewayne VanHoozer (dvanhoozer@gmail.com)
 #
+# Supports both the "just" and "run" CLI task runners.
+#
 # The following system environment variable are supported:
 #
 # variable name             default value
 # ---------------------     -------------
-# JUSTPREP_FILENAME_IN  ... main.just
-# JUSTPREP_FILENAME_OUT ... justfile
+# JUSTPREP_FOR ............ 'just'
+# JUSTPREP_FILENAME_IN  ... 'main.just' | 'main.run'
+# JUSTPREP_FILENAME_OUT ... 'justfile'  | 'Runfile'
 # JUSTPREP_KEYWORDS     ... 'import include require with'
 # JUSTPREP_MODULE_KEYWORD . 'module'
 #
@@ -39,7 +42,7 @@ load COMMON_DIR + "expand_file_path.crb"
 load COMMON_DIR + "handle_command_line_parameters.crb"
 load COMMON_DIR + "just_find_it.crb"
 load COMMON_DIR + "usage.crb"
-load COMMON_DIR + "generate_module_recipes.crb"
+load COMMON_DIR + "generate_module_tasks.crb"
 load COMMON_DIR + "replacement_for_module_line.crb"
 load COMMON_DIR + "include_content_from.crb"
 
@@ -114,12 +117,15 @@ class Justprep
         result_array  = replacement_for_module_line(line_number, a_line)
         @module_names << result_array.first
         out_file.puts result_array.last
+        if using_run?
+          out_file.puts "EXPORT module_#{result.first}"
+        end
       else
         out_file.puts a_line
       end
     end # in_file.readlines ...
 
-    out_file.puts generate_module_recipes(@module_names)
+    out_file.puts generate_module_tasks(@module_names)
 
     out_file.close
   end # def

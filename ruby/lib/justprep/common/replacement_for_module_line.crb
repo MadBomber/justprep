@@ -48,3 +48,5 @@ def replacement_for_module_line(line_number, a_string)
 
   return [module_name, "module_#{module_name} := \"#{path_to_module}\""]
 end
+
+

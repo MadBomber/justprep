@@ -1,7 +1,37 @@
 VERSION = "1.2.3"
 
-JUSTPREP_FILENAME_IN  = ENV.fetch("JUSTPREP_FILENAME_IN", "main.just")
-JUSTPREP_FILENAME_OUT = ENV.fetch("JUSTPREP_FILENAME_OUT", "justfile")
-JUSTPREP_KEYWORDS     = ENV.fetch("JUSTPREP_KEYWORDS", "import include require with").split
-
+JUSTPREP_FOR            = ENV.fetch("JUSTPREP_FOR",           "just")
 JUSTPREP_MODULE_KEYWORD = ENV.fetch("JUSTPREP_MODULE_KEYWORD", "module")
+JUSTPREP_KEYWORDS       = ENV.fetch("JUSTPREP_KEYWORDS",      "import include require with").split
+
+
+def using_just?
+  "just" == JUSTPREP_FOR
+end
+
+
+def using_run?
+  "run" == JUSTPREP_FOR
+end
+
+
+if using_just?
+  JUSTPREP_FILENAME_IN  = ENV.fetch("JUSTPREP_FILENAME_IN",   "main.just")
+  JUSTPREP_FILENAME_OUT = ENV.fetch("JUSTPREP_FILENAME_OUT",  "justfile")
+  FILENAME_OPTION       = "-f"
+
+elsif using_run?
+  JUSTPREP_FILENAME_IN  = ENV.fetch("JUSTPREP_FILENAME_IN",   "main.run")
+  JUSTPREP_FILENAME_OUT = ENV.fetch("JUSTPREP_FILENAME_OUT",  "Runfile")
+  FILENAME_OPTION       = "-r"
+
+else
+  JUSTPREP_FILENAME_IN  = ENV.fetch("JUSTPREP_FILENAME_IN")
+  JUSTPREP_FILENAME_OUT = ENV.fetch("JUSTPREP_FILENAME_OUT")
+  FILENAME_OPTION       = ""
+end
+
+if JUSTPREP_KEYWORDS.includes?(JUSTPREP_MODULE_KEYWORD)
+  error_keyword_conflict
+  exit(1)
+end
