@@ -12,8 +12,8 @@
 # variable name             default value
 # ---------------------     -------------
 # JUSTPREP_FOR ............ 'just'
-# JUSTPREP_FILENAME_IN  ... 'main.just' | 'main.run'
-# JUSTPREP_FILENAME_OUT ... 'justfile'  | 'Runfile'
+# JUSTPREP_FILENAME_IN  ... 'main.just'
+# JUSTPREP_FILENAME_OUT ... 'justfile'
 # JUSTPREP_KEYWORDS     ... 'import include require with'
 # JUSTPREP_MODULE_KEYWORD . 'module'
 #
