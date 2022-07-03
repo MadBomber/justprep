@@ -1,5 +1,8 @@
 # github.com/MadBomber/justprep/**/justfile
 #
+# gem install semver
+#   Provides for semantic version tracking
+#
 # brew install just
 #   Handy way to save and run project-specific commands
 #   https://github.com/casey/just
@@ -15,6 +18,8 @@ set positional-arguments    := true
 set allow-duplicate-recipes := true
 
 version_tag   := "VERSION"
+
+# relative to the repository root $RR
 version_file  := "ruby/lib/justprep/common/constants.crb"
 
 # Displays this list of available recipes
@@ -45,26 +50,37 @@ help:
 
 
 ###################################################
-# Test both the Ruby Gem and the Crystal Executable
-test: _prep unit_tests
+
+# Test both the Ruby Gem and the Crystal Executable using JUST
+test: _prep build unit_tests test_just
+
+
+# Testomg the JUST pre-processor
+test_just:
   #!/usr/bin/env bash
 
-  echo "Integration Tests ..."
+  export JUSTPREP_FOR=just
+  export JUSTPREP_FILENAME_OUT=${JUSTPREP_FOR}file
+  export RESULT=$RR/test/result_for_${JUSTPREP_FOR}.txt
+
+  echo "Integration Tests for JUST ..." > $RESULT
+
 
   cd $RR/test
-  source test.s > result.txt 2>&1
-  result=`diff result.txt expected.txt`
+  source test.s >> $RESULT 2>&1
+  diff=`diff $RESULT expected_for_${JUSTPREP_FOR}.txt`
 
-  if [ "" = "$result" ] ; then
+  if [ "" = "$diff" ] ; then
     echo "Tests PASSED"
   else
     echo "tests FAILED"
-    echo $result
+    echo $diff
   fi
 
 # Ruby unit tests on common Crystal/Ruby code
 ruby_unit_test:
   #!/usr/bin/env bash
+
   original_name=$JUSTPREP_FILENAME_IN
   export JUSTPREP_FILENAME_IN=main.just
 
@@ -87,23 +103,23 @@ ruby_unit_test:
 @crystal_unit_test:
   echo "disabled"
 
-  #### !/usr/bin/env bash
-  #### riginal_name=$JUSTPREP_FILENAME_IN
-  #### xport JUSTPREP_FILENAME_IN=main.just
+  #### #!/usr/bin/env bash
+  #### original_name=$JUSTPREP_FILENAME_IN
+  #### export JUSTPREP_FILENAME_IN=main.just
   ####
-  #### d $RR/crystal
+  #### cd $RR/crystal
   ####
-  #### cho "Crystal ..."
+  #### echo "Crystal ..."
   ####
-  #### rystal run \
+  #### crystal run \
   ####  ../ruby/lib/justprep/common/*.crb \
   ####  ../ruby/test/common_test.rb |\
-  #### grep tests |\
-  #### grep failures |\
-  #### grep errors |\
-  #### grep skips
+  #### fgrep tests |\
+  #### fgrep failures |\
+  #### fgrep errors |\
+  #### fgrep skips
   ####
-  #### xport JUSTPREP_FILENAME_IN=$original_name
+  #### export JUSTPREP_FILENAME_IN=$original_name
 
 
 # Run the unit tests on the common methods in both implementations
@@ -112,18 +128,27 @@ unit_tests: ruby_unit_test crystal_unit_test
 
 #################################################
 ## Recipes that deal with the source code version
-## Version manager is handled by the "bump" gem
+## Version manager is handled by the "semver" gem
 
-# Set the version: major . minor . patch
-set_version version:
+# Set the value of VERSION in the constants.crb file
+# DO NOT give it a value otherwise semver will freak
+_version_set version="`semver format %M.%m.%p`":
   #!/usr/bin/env bash
+  echo "Setting VERSION to {{version}}"
+
   old_version=`grep '^[ \t]*{{version_tag}}' $RR/{{version_file}}`
-  sed -i -r "s/${old_version}/VERSION = \"{{version}}\"/" \
+  sed -i -r "s/${old_version}/{{version_tag}} = \"{{version}}\"/" \
     $RR/{{version_file}}
 
+
 # Show current version
-@show_version:
-  grep '^[ \t]*{{version_tag}}' $RR/{{version_file}}
+@version:
+  semver format %M.%m.%p %s
+
+# Bump the version. Levels: major, minor, patch
+@version_bump level="patch":
+  semver inc {{level}}
+  just _version_set
 
 
 ###########################################

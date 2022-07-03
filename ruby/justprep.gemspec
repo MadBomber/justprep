@@ -8,18 +8,15 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Dewayne VanHoozer"]
   spec.email         = ["dvanhoozer@gmail.com"]
 
-  spec.summary       = "A pre-processor for the 'just' command line utility"
+  spec.summary       = "Just a pre-processor for CLI task runners like 'just'"
   spec.description   = <<~EOS
-    allows a "justfile" to be auto-generated from a seperate source file
+    It allows a task file to be auto-generated from a seperate source file
     that contains inclusionary keywords such as include, import, require
-    and with.  These keywords are followed by a path to a file.  If the
-    file exists, the contents of the file are inserted into the file
-    at the position of the keyword command.  After all keywords have
-    been process a new "justfile" is created which can then be used by
-    the 'just' tool.
+    and with.  justprep is a CLI tool implemented as a Ruby gem AND a compiled
+    Crystal binary.
   EOS
 
-  spec.homepage      = "http://github.com/MadBomber/justprep/tree/main/ruby"
+  spec.homepage      = "http://github.com/MadBomber/justprep"
   spec.license       = "MIT"
   spec.required_ruby_version = ">= 2.4.0"
 
