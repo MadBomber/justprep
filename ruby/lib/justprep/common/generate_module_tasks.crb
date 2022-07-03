@@ -11,7 +11,7 @@
 #   tasks ... String
 #
 def generate_module_tasks(module_names)
-  if just?
+  if using_just?
     tasks = create_just_tasks(module_names)
   elsif using_run?
     tasks = create_run_tasks(module_names)

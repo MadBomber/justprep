@@ -27,6 +27,7 @@ IMPLEMENTATION  = "Ruby"
 
 require           "fileutils"
 require           "pathname"
+
 require_relative  "justprep/crystal_methods"
 
 # The common directory contains files which are usable in
@@ -57,12 +58,11 @@ class Justprep
 
   # Main function called from executable
   def execute
-    if JUSTPREP_KEYWORDS.includes?(JUSTPREP_MODULE_KEYWORD)
-      STDERR.puts
-      STDERR.puts "ERROR: Environment Variable Configuration Problem"
-      STDERR.puts "       JUSTPREP_KEYWORDS cannot include the same value"
-      STDERR.puts "       as the JUSTPREP_MODULE_KEYWORD"
-      STDERR.puts
+    # SMELL:  for some reason the crystal_methods alias_method of
+    #         includes? for include? is not working.
+
+    if JUSTPREP_KEYWORDS.include?(JUSTPREP_MODULE_KEYWORD)
+      error_keyword_conflict
       exit(1)
     end
 
@@ -118,7 +118,7 @@ class Justprep
         @module_names << result_array.first
         out_file.puts result_array.last
         if using_run?
-          out_file.puts "EXPORT module_#{result.first}"
+          out_file.puts "EXPORT module_#{result_array.first}"
         end
       else
         out_file.puts a_line

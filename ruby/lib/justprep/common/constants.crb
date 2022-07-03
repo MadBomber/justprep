@@ -1,4 +1,4 @@
-VERSION = "1.2.3"
+VERSION = "1.2.4"
 
 JUSTPREP_FOR            = ENV.fetch("JUSTPREP_FOR",           "just")
 JUSTPREP_MODULE_KEYWORD = ENV.fetch("JUSTPREP_MODULE_KEYWORD", "module")
@@ -15,23 +15,32 @@ def using_run?
 end
 
 
-if using_just?
-  JUSTPREP_FILENAME_IN  = ENV.fetch("JUSTPREP_FILENAME_IN",   "main.just")
-  JUSTPREP_FILENAME_OUT = ENV.fetch("JUSTPREP_FILENAME_OUT",  "justfile")
-  FILENAME_OPTION       = "-f"
+def in_out_option
+  if using_just?
+    filename_in     = ENV.fetch("JUSTPREP_FILENAME_IN",   "main.just")
+    filename_out    = ENV.fetch("JUSTPREP_FILENAME_OUT",  "justfile")
+    filename_option = "-f"
 
-elsif using_run?
-  JUSTPREP_FILENAME_IN  = ENV.fetch("JUSTPREP_FILENAME_IN",   "main.run")
-  JUSTPREP_FILENAME_OUT = ENV.fetch("JUSTPREP_FILENAME_OUT",  "Runfile")
-  FILENAME_OPTION       = "-r"
+  elsif using_run?
+    filename_in     = ENV.fetch("JUSTPREP_FILENAME_IN",   "main.run")
+    filename_out    = ENV.fetch("JUSTPREP_FILENAME_OUT",  "Runfile")
+    filename_option = "-r"
 
-else
-  JUSTPREP_FILENAME_IN  = ENV.fetch("JUSTPREP_FILENAME_IN")
-  JUSTPREP_FILENAME_OUT = ENV.fetch("JUSTPREP_FILENAME_OUT")
-  FILENAME_OPTION       = ""
+  else
+    filename_in     = ENV.fetch("JUSTPREP_FILENAME_IN")
+    filename_out    = ENV.fetch("JUSTPREP_FILENAME_OUT")
+    filename_option = ""
+  end
+
+  return [filename_in, filename_out, filename_option]
 end
 
-if JUSTPREP_KEYWORDS.includes?(JUSTPREP_MODULE_KEYWORD)
-  error_keyword_conflict
-  exit(1)
-end
+
+# Had to do it this way because Crystal though that
+# the constants were being defined dynamically.
+# I know this is silly.  Hopefully the refacto for
+# version v2.0.0 is fix this mess.
+
+JUSTPREP_FILENAME_IN  = in_out_option()[0]
+JUSTPREP_FILENAME_OUT = in_out_option()[1]
+FILENAME_OPTION       = in_out_option()[2]

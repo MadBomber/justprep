@@ -59,7 +59,7 @@ def error_keyword_conflict
 ERROR:  There is a conflict between the environment variables
         $JUSTPREP_MODULE_KEYWORD _cannot_ be in $JUSTPREP_KEYWORDS
 
-        $JUSTPREP_KEYWORDS => #{JUSTPRE_KEYWORDS.join(comma_space)}
+        $JUSTPREP_KEYWORDS => #{JUSTPREP_KEYWORDS.join(comma_space)}
         $JUSTPREP_MODULE_KEYWORD => #{JUSTPREP_MODULE_KEYWORD}
 
 "

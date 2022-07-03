@@ -7,12 +7,15 @@
 # Desc: A preprocessor to "just" cli tool
 # By:   Dewayne VanHoozer (dvanhoozer@gmail.com)
 #
+# Supports both the "just" and "run" CLI task runners.
+#
 # The following system environment variable are supported:
 #
 # variable name             default value
 # ---------------------     -------------
-# JUSTPREP_FILENAME_IN  ... main.just
-# JUSTPREP_FILENAME_OUT ... justfile
+# JUSTPREP_FOR ............ 'just'
+# JUSTPREP_FILENAME_IN  ... 'main.just' | 'main.run'
+# JUSTPREP_FILENAME_OUT ... 'justfile'  | 'Runfile'
 # JUSTPREP_KEYWORDS     ... 'import include require with'
 # JUSTPREP_MODULE_KEYWORD . 'module'
 #
@@ -33,11 +36,7 @@ class Justprep
 
   def execute
     if JUSTPREP_KEYWORDS.includes?(JUSTPREP_MODULE_KEYWORD)
-      STDERR.puts
-      STDERR.puts "ERROR: Environment Variable Configuration Problem"
-      STDERR.puts "       JUSTPREP_KEYWORDS cannot include the same value"
-      STDERR.puts "       as the JUSTPREP_MODULE_KEYWORD"
-      STDERR.puts
+      error_keyword_conflict
       exit(1)
     end
 
@@ -92,12 +91,15 @@ class Justprep
         module_name, module_filename = replacement_for_module_line(line_number, a_line)
         @module_names << module_name
         out_file.puts module_filename
+        if using_run?
+          out_file.puts "EXPORT module_#{module_name}"
+        end
       else
         out_file.puts a_line
       end
     end # in_file.readlines ...
 
-    out_file.puts generate_module_recipes(@module_names)
+    out_file.puts generate_module_tasks(@module_names)
 
     out_file.close
   end # def execute

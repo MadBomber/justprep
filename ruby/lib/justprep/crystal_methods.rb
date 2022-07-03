@@ -5,7 +5,7 @@
 
 # TODO: find other classes in which Ruby/Crystal differ
 
-class Array
+module Enumerable
   alias_method :includes?, :include?
 end
 
