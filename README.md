@@ -18,6 +18,8 @@ There is no specific speed benchmark between the two implementations.  I can't p
 
 Since this capability is implemented in both Ruby and Crystal there is only one set of documentation.  Both implementations act the same way.  See the [repository's Wiki](https://github.com/MadBomber/justprep/wiki) for details.
 
+#### CLI Task Runners Supported
+* [just](https://github.com/casey/just)
 
 ### Contributing
 
