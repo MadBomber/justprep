@@ -1,0 +1,4 @@
+# justprep/test/error_missing.run
+
+# the path does not exist
+with /path/to/bad_filename.run

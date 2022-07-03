@@ -1,0 +1,14 @@
+# .../modules/bbb.run
+
+##
+# Module bbb magic
+magic:
+  echo 'Do you believe in Magic?'
+
+##
+# Do something magical in bbb
+xyzzy:
+  echo "Magic from bbb ..."
+  echo "... watch me pull a ${1} out of my hat."
+
+

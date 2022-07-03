@@ -8,16 +8,17 @@ echo
 
 echo "Testing the envar paths Ruby version..."
 
-export JUSTPREP_FILENAME_IN=envar.just
+export JUSTPREP_FILENAME_IN=envar.$JUSTPREP_FOR
 
-rm -f justfile
-cp -f ./temp.just $HOME
+rm -f $JUSTPREP_FILENAME_OUT
+
+cp -f ./temp.$JUSTPREP_FOR $HOME
 
 ../ruby/bin/justprep
 echo "exit code: $?"
 
-cat justfile
+cat $JUSTPREP_FILENAME_OUT
 
-rm -f ~/temp.just
+rm -f ~/temp.$JUSTPREP_FOR
 
 echo "Done."

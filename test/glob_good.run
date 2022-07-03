@@ -1,0 +1,4 @@
+# justprep/test/glob_good.run
+
+# the path contains several files
+with glob_dir/**/*.run

@@ -1,0 +1,7 @@
+# .../justprep/test/envar.run
+
+with ~/temp.run
+
+with $HOME/temp.run
+
+with ${HOME}/temp.run

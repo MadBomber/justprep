@@ -1,0 +1,13 @@
+# justprep/test/module_good.run
+
+module aaa modules/aaa.run
+module bbb modules/bbb.run
+
+##
+# Show Available Recipes
+my_list:
+  run --list
+
+##
+# Show All Available tasks including the Modules
+list_all: my_list aaa bbb

@@ -8,6 +8,6 @@ echo
 
 echo "Testing happy path Ruby version..."
 
-../ruby/bin/justprep && just
+../ruby/bin/justprep && $JUSTPREP_FOR
 
 echo "Done."

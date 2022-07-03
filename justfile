@@ -45,15 +45,23 @@ help:
 
 
 ###################################################
-# Test both the Ruby Gem and the Crystal Executable
-test: _prep unit_tests
+
+# Test both the Ruby Gem and the Crystal Executable using JUST and RUN
+test: _prep build unit_tests test_just test_run
+
+
+# Testomg the JUST pre-processor
+test_just:
   #!/usr/bin/env bash
 
-  echo "Integration Tests ..."
+  echo "Integration Tests for JUST ..." > $RR/test/result_for_just.txt
+
+  export JUSTPREP_FOR=just
+  export JUSTPREP_FILENAME_OUT=${JUSTPREP_FOR}file
 
   cd $RR/test
-  source test.s > result.txt 2>&1
-  result=`diff result.txt expected.txt`
+  source test.s >> result_for_just.txt 2>&1
+  result=`diff result_for_just.txt expected_for_just.txt`
 
   if [ "" = "$result" ] ; then
     echo "Tests PASSED"
@@ -61,6 +69,28 @@ test: _prep unit_tests
     echo "tests FAILED"
     echo $result
   fi
+
+
+# Testomg the RUN pre-processor
+test_run:
+  #!/usr/bin/env bash
+
+  echo "Integration Tests fpr RUN ..." > $RR/test/result_for_run.txt
+
+  export JUSTPREP_FOR=run
+  export JUSTPREP_FILENAME_OUT=${JUSTPREP_FOR}file
+
+  cd $RR/test
+  source test.s >> result_for_run.txt 2>&1
+  result=`diff result_for_run.txt expected_for_run.txt`
+
+  if [ "" = "$result" ] ; then
+    echo "Tests PASSED"
+  else
+    echo "tests FAILED"
+    echo $result
+  fi
+
 
 # Ruby unit tests on common Crystal/Ruby code
 ruby_unit_test:
@@ -153,4 +183,4 @@ set_version version:
 # Oreoare to test the latest build
 @_prep: build
   rm -f $RR/test/justfile
-  rm -f $RR/test/result.txt
+  rm -f $RR/test/Runfile

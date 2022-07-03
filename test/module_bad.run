@@ -1,0 +1,10 @@
+# justprep/test/module_bad.run
+
+# the path does not exist
+module ccc /path/to/no_where/Runfile
+
+##
+# Show recipes available
+my_list:
+  run --list
+

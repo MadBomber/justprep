@@ -8,15 +8,17 @@ echo
 
 echo "Testing the error paths Crystal version..."
 
-export JUSTPREP_FILENAME_IN=error_bad.just
+export JUSTPREP_FILENAME_IN=error_bad.$JUSTPREP_FOR
 
-rm -f justfile
+rm -f $JUSTPREP_FILENAME_OUT
+
 ../crystal/bin/justprep
 echo "exit code: $?"
 
-export JUSTPREP_FILENAME_IN=error_missing.just
+export JUSTPREP_FILENAME_IN=error_missing.$JUSTPREP_FOR
 
-rm -f justfile
+rm -f $JUSTPREP_FILENAME_OUT
+
 ../crystal/bin/justprep
 echo "exit code: $?"
 

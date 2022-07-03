@@ -8,16 +8,20 @@ echo
 
 echo "Testing the glob paths Crystal version..."
 
-export JUSTPREP_FILENAME_IN=glob_good.just
+export JUSTPREP_FILENAME_IN=glob_good.$JUSTPREP_FOR
 
-rm -f justfile
+rm -f $JUSTPREP_FILENAME_OUT
+
 ../crystal/bin/justprep
 echo "exit code: $?"
-cat justfile glob_dir/expected_justfile
 
-export JUSTPREP_FILENAME_IN=glob_bad.just
+cat $JUSTPREP_FILENAME_OUT glob_dir/expected_$JUSTPREP_FILENAME_OUT
 
-rm -f justfile
+
+export JUSTPREP_FILENAME_IN=glob_bad.$JUSTPREP_FOR
+
+rm -f $JUSTPREP_FILENAME_OUT
+
 ../crystal/bin/justprep
 echo "exit code: $?"
 

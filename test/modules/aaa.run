@@ -1,0 +1,14 @@
+# .../modules/aaa.run
+
+##
+# Module aaa magic
+magic:
+  echo 'Do you believe in Magic?'
+
+##
+# Do something magical in aaa
+xyzzy:
+  echo "Magic from aaa ..."
+  echo "... watch me pull a ${1} out of my hat."
+
+

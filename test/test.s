@@ -2,9 +2,9 @@
 #
 # Save the current system envar because the tests will change it
 
+original_for=$JUSTPREP_FOR
 original_filename_in=$JUSTPREP_FILENAME_IN
-
-export JUSTPREP_FILENAME_IN=main.just
+original_filename_out=$JUSTPREP_FILENAME_OUT
 
 
 echo
@@ -43,7 +43,7 @@ echo "# testing use of envars #"
 echo "#########################"
 echo
 
-cp ./temp.just $HOME
+cp ./temp.${JUSTPREP_FOR} $HOME
 
 source ./envar-test-cr.s
 source ./envar-test-rb.s
@@ -62,7 +62,9 @@ source ./module-test-rb.s
 ###################################################
 ## End of Tests Cleanup
 
-rm -f ~/temp.just
+rm -f ~/temp.${JUSTPREP_FOR}
 
 # restore the original system envar ...
+export JUSTPREP_FOR=$original_for
 export JUSTPREP_FILENAME_IN=$original_filename_in
+export JUSTPREP_FILENAME_OUT=$original_filename_out

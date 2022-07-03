@@ -1,0 +1,402 @@
+Integration Tests fpr RUN ...
+
+##########################
+# testing the HAPPY path #
+##########################
+
+
++---------+
+| Crystal |
++---------+
+
+Testing the happy path Crystal version...
+run: 5.8: expecting TokenNewline ('\n')
+Done.
+
++------+
+| Ruby |
++------+
+
+Testing happy path Ruby version...
+run: 5.8: expecting TokenNewline ('\n')
+Done.
+
+############################
+# testing error conditions #
+############################
+
+
++---------+
+| Crystal |
++---------+
+
+Testing the error paths Crystal version...
+
+ERROR: File Does Not Exist
+   |
+ 4 | with /path/to/bad_filename.run
+   |      ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+exit code: 1
+
+ERROR: File Does Not Exist
+   |
+ 4 | with
+   |      ^^^^^^^^^^^^^
+
+exit code: 1
+Done.
+
++------+
+| Ruby |
++------+
+
+Testing the error paths Ruby version...
+
+ERROR: File Does Not Exist
+   |
+ 4 | with /path/to/bad_filename.run
+   |      ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+exit code: 1
+
+ERROR: File Does Not Exist
+   |
+ 4 | with
+   |      ^^^^^^^^^^^^^
+
+exit code: 1
+Done.
+
+######################################
+# testing the ability to GLOB a path #
+######################################
+
+
++---------+
+| Crystal |
++---------+
+
+Testing the glob paths Crystal version...
+exit code: 0
+# justprep/test/glob_good.run
+
+# the path contains several files
+# with glob_dir/**/*.run
+
+# >>> glob_dir/three/three.run
+##
+# three to get ready
+three:
+  echo "glob 333"
+
+##
+# hi
+hello:
+  echo "glob hello"
+# <<< glob_dir/three/three.run
+
+# >>> glob_dir/one/one.run
+##
+# one for the money
+one:
+  echo "glob 1"
+
+##
+# johnny 5
+five:
+  echo "glob 55555"
+# <<< glob_dir/one/one.run
+
+# >>> glob_dir/two/two.run
+##
+# two for the money
+two:
+  echo "glot 22"
+
+##
+# six pick up sticks
+six:
+  echo "glob 666666"
+# <<< glob_dir/two/two.run
+
+# >>> glob_dir/four/four.run
+##
+# go cat go
+four:
+  echo "glob 4444"
+# <<< glob_dir/four/four.run
+
+cat: glob_dir/expected_runfile: No such file or directory
+
+ERROR: File Does Not Exist
+   |
+ 4 | with /path/to/no_where/**/*.run
+   |      ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+exit code: 1
+Done.
+
++------+
+| Ruby |
++------+
+
+Testing the glob paths Ruby version...
+exit code: 0
+# justprep/test/glob_good.run
+
+# the path contains several files
+# with glob_dir/**/*.run
+
+# >>> glob_dir/four/four.run
+##
+# go cat go
+four:
+  echo "glob 4444"
+# <<< glob_dir/four/four.run
+
+# >>> glob_dir/one/one.run
+##
+# one for the money
+one:
+  echo "glob 1"
+
+##
+# johnny 5
+five:
+  echo "glob 55555"
+# <<< glob_dir/one/one.run
+
+# >>> glob_dir/three/three.run
+##
+# three to get ready
+three:
+  echo "glob 333"
+
+##
+# hi
+hello:
+  echo "glob hello"
+# <<< glob_dir/three/three.run
+
+# >>> glob_dir/two/two.run
+##
+# two for the money
+two:
+  echo "glot 22"
+
+##
+# six pick up sticks
+six:
+  echo "glob 666666"
+# <<< glob_dir/two/two.run
+
+
+ERROR: File Does Not Exist
+   |
+ 4 | with /path/to/no_where/**/*.run
+   |      ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+exit code: 1
+# justprep/test/glob_bad.run
+
+# the path does not exist
+# with /path/to/no_where/**/*.run
+Done.
+
+#########################
+# testing use of envars #
+#########################
+
+
++---------+
+| Crystal |
++---------+
+
+Testing the envar paths Crystal version...
+exit code: 0
+# .../justprep/test/envar.run
+
+# with ~/temp.run
+
+# >>> /Users/dewayne/temp.run
+# Move this file to your home directory
+
+##
+# To test the subsitution of environment variables
+# and the tidil character.
+sub_envars:
+  echo "it worked"
+# <<< /Users/dewayne/temp.run
+
+# with $HOME/temp.run
+
+# >>> /Users/dewayne/temp.run
+# Move this file to your home directory
+
+##
+# To test the subsitution of environment variables
+# and the tidil character.
+sub_envars:
+  echo "it worked"
+# <<< /Users/dewayne/temp.run
+
+# with ${HOME}/temp.run
+
+# >>> /Users/dewayne/temp.run
+# Move this file to your home directory
+
+##
+# To test the subsitution of environment variables
+# and the tidil character.
+sub_envars:
+  echo "it worked"
+# <<< /Users/dewayne/temp.run
+
+Done.
+
++------+
+| Ruby |
++------+
+
+Testing the envar paths Ruby version...
+exit code: 0
+# .../justprep/test/envar.run
+
+# with ~/temp.run
+
+# >>> /Users/dewayne/temp.run
+# Move this file to your home directory
+
+##
+# To test the subsitution of environment variables
+# and the tidil character.
+sub_envars:
+  echo "it worked"
+# <<< /Users/dewayne/temp.run
+
+# with $HOME/temp.run
+
+# >>> /Users/dewayne/temp.run
+# Move this file to your home directory
+
+##
+# To test the subsitution of environment variables
+# and the tidil character.
+sub_envars:
+  echo "it worked"
+# <<< /Users/dewayne/temp.run
+
+# with ${HOME}/temp.run
+
+# >>> /Users/dewayne/temp.run
+# Move this file to your home directory
+
+##
+# To test the subsitution of environment variables
+# and the tidil character.
+sub_envars:
+  echo "it worked"
+# <<< /Users/dewayne/temp.run
+
+Done.
+
+########################
+# testing fake modules #
+########################
+
+
++---------+
+| Crystal |
++---------+
+
+Testing fake modules Crystal version...
+exit code: 0
+# justprep/test/module_good.run
+
+module_aaa := "modules/aaa.run"
+EXPORT module_aaa
+module_bbb := "modules/bbb.run"
+EXPORT module_bbb
+
+##
+# Show Available Recipes
+my_list:
+  run --list
+
+##
+# Show All Available tasks including the Modules
+list_all: my_list aaa bbb
+
+
+##
+# Module aaa
+# Encapsulates additional tasks
+aaa:
+  run -r ${module_aaa} ${@}
+
+
+
+##
+# Module bbb
+# Encapsulates additional tasks
+bbb:
+  run -r ${module_bbb} ${@}
+
+
+ERROR: File Does Not Exist
+   |
+ 4 | module ccc /path/to/no_where/Runfile
+   |            ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+exit code: 1
+Done.
+
++------+
+| Ruby |
++------+
+
+Testing fake modules Ruby version...
+exit code: 0
+# justprep/test/module_good.run
+
+module_aaa := "modules/aaa.run"
+EXPORT module_aaa
+module_bbb := "modules/bbb.run"
+EXPORT module_bbb
+
+##
+# Show Available Recipes
+my_list:
+  run --list
+
+##
+# Show All Available tasks including the Modules
+list_all: my_list aaa bbb
+
+
+##
+# Module aaa
+# Encapsulates additional tasks
+aaa:
+  run -r ${module_aaa} ${@}
+
+
+
+##
+# Module bbb
+# Encapsulates additional tasks
+bbb:
+  run -r ${module_bbb} ${@}
+
+
+ERROR: File Does Not Exist
+   |
+ 4 | module ccc /path/to/no_where/Runfile
+   |            ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+exit code: 1
+# justprep/test/module_bad.run
+
+# the path does not exist
+Done.

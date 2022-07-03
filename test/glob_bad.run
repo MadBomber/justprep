@@ -1,0 +1,4 @@
+# justprep/test/glob_bad.run
+
+# the path does not exist
+with /path/to/no_where/**/*.run

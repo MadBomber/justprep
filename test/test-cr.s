@@ -8,6 +8,6 @@ echo
 
 echo "Testing the happy path Crystal version..."
 
-../crystal/bin/justprep && just
+../crystal/bin/justprep && $JUSTPREP_FOR
 
 echo "Done."
