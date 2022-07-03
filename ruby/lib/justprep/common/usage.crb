@@ -4,11 +4,11 @@ def usage
   usage_text = "
 justprep v#{VERSION} (#{IMPLEMENTATION})
 
-A pre-processor to the just command line utility
+Just a pre-processor to the 'just' and 'run' CLI task runners
 By Dewayne VanHoozer <dvanhoozer@gmail.com>
 
 USAGE:
-  justprep [flags] && just
+  justprep [flags] && $JUSTPREP_FOR
 
 FLAGS:
       --version   Shows the current version
@@ -18,13 +18,28 @@ DESCRIPTION:
   Looks for a file named #{JUSTPREP_FILENAME_IN} in the current
   directory hierarchy.  If found it replaces all lines that
   have the keywords (#{JUSTPREP_KEYWORDS.join(", ")}) followed
-  by file path with the contents of the specified file.
+  by a file path with the contents of the specified file.
+
+  if it finds a line that begins with the module keyword
+  (#{JUSTPREP_MODULE_KEYWORD}) in sets up a fake module
+  system consistent with the target CLI task runner #{JUSTPREP_FOR}.
 
 SYSTEM ENVIRONMENT VARIABLES:
-                            Default Value
-  JUSTPREP_FILENAME_IN .... main.just
-  JUSTPREP_FILENAME_OUT ... justfile
+                            Default / Current Value
+  JUSTPREP_FOR ............ 'just'
+                            '#{JUSTPREP_FOR}'
+
+  JUSTPREP_FILENAME_IN .... 'main.just'
+                            '#{JUSTPREP_FILENAME_IN}'
+
+  JUSTPREP_FILENAME_OUT ... 'justfile'
+                            '#{JUSTPREP_FILENAME_OUT}'
+
   JUSTPREP_KEYWORDS ....... 'import include require with'
+                            '#{JUSTPREP_KEYWORDS.join(' ')}'
+
+  JUSTPREP_MODULE_KEYWORD . 'module'
+                            '#{JUSTPREP_MODULE_KEYWORD}'
 
 SUGGESTION:
   Create an alias for your command shell. For example

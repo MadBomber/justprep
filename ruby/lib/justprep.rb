@@ -10,8 +10,9 @@
 #
 # variable name             default value
 # ---------------------     -------------
-# JUSTPREP_FILENAME_IN  ... main.just
-# JUSTPREP_FILENAME_OUT ... justfile
+# JUSTPREP_FOR ............ 'just'
+# JUSTPREP_FILENAME_IN  ... 'main.just' | 'main.run'
+# JUSTPREP_FILENAME_OUT ... 'justfile'  | 'Runfile'
 # JUSTPREP_KEYWORDS     ... 'import include require with'
 # JUSTPREP_MODULE_KEYWORD . 'module'
 #
@@ -39,7 +40,7 @@ load COMMON_DIR + "expand_file_path.crb"
 load COMMON_DIR + "handle_command_line_parameters.crb"
 load COMMON_DIR + "just_find_it.crb"
 load COMMON_DIR + "usage.crb"
-load COMMON_DIR + "generate_module_recipes.crb"
+load COMMON_DIR + "generate_module_tasks.crb"
 load COMMON_DIR + "replacement_for_module_line.crb"
 load COMMON_DIR + "include_content_from.crb"
 
@@ -54,12 +55,11 @@ class Justprep
 
   # Main function called from executable
   def execute
-    if JUSTPREP_KEYWORDS.includes?(JUSTPREP_MODULE_KEYWORD)
-      STDERR.puts
-      STDERR.puts "ERROR: Environment Variable Configuration Problem"
-      STDERR.puts "       JUSTPREP_KEYWORDS cannot include the same value"
-      STDERR.puts "       as the JUSTPREP_MODULE_KEYWORD"
-      STDERR.puts
+    # SMELL:  for some reason the crystal_methods alias_method of
+    #         includes? for include? is not working.
+
+    if JUSTPREP_KEYWORDS.include?(JUSTPREP_MODULE_KEYWORD)
+      error_keyword_conflict
       exit(1)
     end
 
@@ -119,7 +119,7 @@ class Justprep
       end
     end # in_file.readlines ...
 
-    out_file.puts generate_module_recipes(@module_names)
+    out_file.puts generate_module_tasks(@module_names)
 
     out_file.close
   end # def

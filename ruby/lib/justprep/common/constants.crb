@@ -1,7 +1,36 @@
 VERSION = "1.2.3"
 
-JUSTPREP_FILENAME_IN  = ENV.fetch("JUSTPREP_FILENAME_IN", "main.just")
-JUSTPREP_FILENAME_OUT = ENV.fetch("JUSTPREP_FILENAME_OUT", "justfile")
+JUSTPREP_FOR            = ENV.fetch("JUSTPREP_FOR",           "just")
+JUSTPREP_MODULE_KEYWORD = ENV.fetch("JUSTPREP_MODULE_KEYWORD", "module")
 JUSTPREP_KEYWORDS     = ENV.fetch("JUSTPREP_KEYWORDS", "import include require with").split
 
-JUSTPREP_MODULE_KEYWORD = ENV.fetch("JUSTPREP_MODULE_KEYWORD", "module")
+
+def using_just?
+  "just" == JUSTPREP_FOR
+end
+
+
+def in_out_option
+  if using_just?
+    filename_in     = ENV.fetch("JUSTPREP_FILENAME_IN",   "main.just")
+    filename_out    = ENV.fetch("JUSTPREP_FILENAME_OUT",  "justfile")
+    filename_option = "-f"
+
+  else
+    filename_in     = ENV.fetch("JUSTPREP_FILENAME_IN")
+    filename_out    = ENV.fetch("JUSTPREP_FILENAME_OUT")
+    filename_option = ""
+  end
+
+  return [filename_in, filename_out, filename_option]
+end
+
+
+# Had to do it this way because Crystal though that
+# the constants were being defined dynamically.
+# I know this is silly.  Hopefully the refacto for
+# version v2.0.0 is fix this mess.
+
+JUSTPREP_FILENAME_IN  = in_out_option()[0]
+JUSTPREP_FILENAME_OUT = in_out_option()[1]
+FILENAME_OPTION       = in_out_option()[2]

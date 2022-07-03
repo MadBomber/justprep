@@ -15,6 +15,7 @@ RR = ENV["RR"]
 class CommonTest < Minitest::Test
   def test_that_it_has_a_constants
     refute_nil VERSION
+    refute_nil JUSTPREP_FOR
     refute_nil JUSTPREP_FILENAME_IN
     refute_nil JUSTPREP_FILENAME_OUT
     refute_nil JUSTPREP_KEYWORDS
@@ -62,6 +63,7 @@ class CommonTest < Minitest::Test
     # SMELL:  This test _ASSUMES_ that the JUSTPREP_FILENAME_IN
     #         value is "main.just"
 
+    assert_equal JUSTPREP_FOR,          "just"
     assert_equal JUSTPREP_FILENAME_IN, "main.just"
 
     from_here = "#{RR}/test/glob_dir/one"
@@ -92,8 +94,15 @@ class CommonTest < Minitest::Test
   end
 
 
-  def test_generate_module_recipes
+  def test_generate_module_tasks_for_run
+    skip "Need to reorganize tests into context"
+  end
+
+
+  def test_generate_module_tasks_for_just
     module_names = ["my_mod"]
+
+    assert_equal JUSTPREP_FOR, "just"
 
     expected  = "
 
@@ -103,7 +112,7 @@ class CommonTest < Minitest::Test
 
 "
 
-    results   = generate_module_recipes(module_names)
+    results   = generate_module_tasks(module_names)
 
     assert_equal results, expected
   end
