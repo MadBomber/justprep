@@ -1,2 +1,2 @@
 justfile
-result.txt
+result_for_*.txt

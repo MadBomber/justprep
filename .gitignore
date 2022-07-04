@@ -1,6 +1,9 @@
 # created by sed as backup
 *-r
 
+# my engineering notes
+_notes.txt
+
 *.gem
 *.rbc
 /.config
