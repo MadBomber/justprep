@@ -6,6 +6,8 @@ Just a CLI pre-processor tool for task runners like "just" my current favorite.
 
 There is no specific speed benchmark between the two implementations.  I can't perceive any specific speed of processing differences between the two implementations with the small sets of task files that I use.  Its really a matter of your project workflow.  If your projects are primarily Ruby, then install the Ruby gem version.  If you do not primarily use Ruby (why not?  Its a GREAT language!) then install the Crystal version.
 
+TL;DR [Examples](https://github.com/MadBomber/justprep/tree/main/examples) and you should look through the [wiki](https://github.com/MadBomber/justprep/wiki) for inspiration.
+
 ### Installation for the Ruby version
 
     gem install justprep
