@@ -1,9 +1,11 @@
 # common/just_find_it.crb
 
+class Justprep
+
 # look for first occurace of mainfile
 # returns nil when none are found.
 def just_find_it(here = FileUtils.pwd)
-  mainfile_path = here + "/" + JUSTPREP_FILENAME_IN
+  mainfile_path = here + "/" + @@justprep_filename_in.to_s
   return mainfile_path if File.exists?(mainfile_path)
 
   parts = here.to_s.split("/")
@@ -12,3 +14,5 @@ def just_find_it(here = FileUtils.pwd)
   return nil if parts.empty?
   return just_find_it(parts.join('/'))
 end
+
+end # class Justprep

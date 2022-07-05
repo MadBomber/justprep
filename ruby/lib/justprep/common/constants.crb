@@ -1,36 +1,53 @@
-VERSION = "1.2.3"
+VERSION = "1.2.4"
 
-JUSTPREP_FOR            = ENV.fetch("JUSTPREP_FOR",           "just")
-JUSTPREP_MODULE_KEYWORD = ENV.fetch("JUSTPREP_MODULE_KEYWORD", "module")
-JUSTPREP_KEYWORDS     = ENV.fetch("JUSTPREP_KEYWORDS", "import include require with").split
+class Justprep
+
+# define class variables used for configuration
+# This helps Crystal know what the type of the varibles are.
+
+@@justprep_for            = "String"
+@@justprep_module_keyword = "String"
+@@justprep_keywords       = ["String", "String"]
+@@justprep_filename_in    = "String"
+@@justprep_filename_out   = "String"
+@@filename_option         = "String"
+
+
+# defining all these instance methods for Ruby's unit tests
+
+def justprep_for           ; @@justprep_for end
+def justprep_module_keyword; @@justprep_module_keyword end
+def justprep_keywords      ; @@justprep_keywords end
+def justprep_filename_in   ; @@justprep_filename_in end
+def justprep_filename_out  ; @@justprep_filename_out end
+def filename_option        ; @@filename_option end
 
 
 def using_just?
-  "just" == JUSTPREP_FOR
+  "just" == @@justprep_for
 end
 
 
-def in_out_option
+# Sets the configuration class variables from their cooresponding
+# system environment variables.  Any configuration coming from the
+# command-line parameters are set in the handle_command_line_parameters()
+# method.
+#
+def set_configuration
+  @@justprep_for            = ENV.fetch("JUSTPREP_FOR",           "just")
+  @@justprep_module_keyword = ENV.fetch("JUSTPREP_MODULE_KEYWORD", "module")
+  @@justprep_keywords       = ENV.fetch("justprep_keywords", "import include require with").split
+
   if using_just?
-    filename_in     = ENV.fetch("JUSTPREP_FILENAME_IN",   "main.just")
-    filename_out    = ENV.fetch("JUSTPREP_FILENAME_OUT",  "justfile")
-    filename_option = "-f"
+    @@justprep_filename_in  = ENV.fetch("JUSTPREP_FILENAME_IN",   "main.just")
+    @@justprep_filename_out = ENV.fetch("JUSTPREP_FILENAME_OUT",  "justfile")
+    @@filename_option       = "-f"
 
   else
-    filename_in     = ENV.fetch("JUSTPREP_FILENAME_IN")
-    filename_out    = ENV.fetch("JUSTPREP_FILENAME_OUT")
-    filename_option = ""
+    @@justprep_filename_in  = ENV.fetch("JUSTPREP_FILENAME_IN")
+    @@justprep_filename_out = ENV.fetch("JUSTPREP_FILENAME_OUT")
+    @@filename_option       = ""
   end
-
-  return [filename_in, filename_out, filename_option]
 end
 
-
-# Had to do it this way because Crystal though that
-# the constants were being defined dynamically.
-# I know this is silly.  Hopefully the refacto for
-# version v2.0.0 is fix this mess.
-
-JUSTPREP_FILENAME_IN  = in_out_option()[0]
-JUSTPREP_FILENAME_OUT = in_out_option()[1]
-FILENAME_OPTION       = in_out_option()[2]
+end # class Justprep

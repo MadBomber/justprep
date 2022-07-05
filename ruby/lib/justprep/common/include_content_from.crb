@@ -1,5 +1,6 @@
 # .../ruby/lib/justprep/common/def include_content_from.crb
 
+class Justprep
 
 # single-level inclusion
 #
@@ -11,14 +12,15 @@
 #   nil .... This is a function without specific return value
 #
 def include_content_from(out_file, module_filename)
-  out_file.puts "\n# >>> #{module_filename}"
+  out_file.puts "\n# >>> #{module_filename}" unless no_brag?
 
   File.read_lines(module_filename).each do |m_line|
     out_file.puts m_line
   end
 
-  out_file.puts "# <<< #{module_filename}\n"
+  out_file.puts "# <<< #{module_filename}\n" unless no_brag?
 
   return nil
 end
 
+end # class Justprep

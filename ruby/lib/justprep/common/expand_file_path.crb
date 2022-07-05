@@ -1,5 +1,7 @@
 # common/expand_file_path.crb
 
+class Justprep
+
 # use an external shell to expand system environment variables
 def expand_file_path(a_path_string)
   a_path_string = a_path_string.strip
@@ -13,3 +15,4 @@ def expand_file_path(a_path_string)
   return a_path_string
 end
 
+end # class Justprep

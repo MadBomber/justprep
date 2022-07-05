@@ -1,5 +1,7 @@
 # common/usage.crb
 
+class Justprep
+
 def usage
   usage_text = "
 justprep v#{VERSION} (#{IMPLEMENTATION})
@@ -9,38 +11,39 @@ By Dewayne VanHoozer <dvanhoozer@gmail.com>
 
 USAGE:
   justprep [flags]
-  justprep && #{JUSTPREP_FOR}
+  justprep && #{@@justprep_for}
 
 FLAGS:
       --version   Shows the current version
   -h, --help      Displays this usage message
+      --no-brag   Do not add header/footer around included content
 
 DESCRIPTION:
-  Looks for a file named #{JUSTPREP_FILENAME_IN} in the current
+  Looks for a file named #{@@justprep_filename_in} in the current
   directory hierarchy.  If found it replaces all lines that
-  have the keywords (#{JUSTPREP_KEYWORDS.join(", ")}) followed
+  have the keywords (#{@@justprep_keywords.join(", ")}) followed
   by a file path with the contents of the specified file.
 
   if it finds a line that begins with the module keyword
-  (#{JUSTPREP_MODULE_KEYWORD}) in sets up a fake module
-  system consistent with the target CLI task runner #{JUSTPREP_FOR}.
+  (#{@@justprep_module_keyword}) in sets up a fake module
+  system consistent with the target CLI task runner #{@@justprep_for}.
 
 SYSTEM ENVIRONMENT VARIABLES:
                             Default / Current Value
   JUSTPREP_FOR ............ 'just'
-                            '#{JUSTPREP_FOR}'
+                            '#{@@justprep_for}'
 
   JUSTPREP_FILENAME_IN .... 'main.just'
-                            '#{JUSTPREP_FILENAME_IN}'
+                            '#{@@justprep_filename_in}'
 
   JUSTPREP_FILENAME_OUT ... 'justfile'
-                            '#{JUSTPREP_FILENAME_OUT}'
+                            '#{@@justprep_filename_out}'
 
   JUSTPREP_KEYWORDS ....... 'import include require with'
-                            '#{JUSTPREP_KEYWORDS.join(' ')}'
+                            '#{@@justprep_keywords.join(' ')}'
 
   JUSTPREP_MODULE_KEYWORD . 'module'
-                            '#{JUSTPREP_MODULE_KEYWORD}'
+                            '#{@@justprep_module_keyword}'
 
 SUGGESTION:
   Create an alias for your command shell. For example
@@ -60,3 +63,5 @@ THANKS TO:
 
   return usage_text
 end
+
+end # class Justprep

@@ -13,13 +13,18 @@ IMPLEMENTATION = "CrystalRuby"
 RR = ENV["RR"]
 
 class CommonTest < Minitest::Test
-  def test_that_it_has_a_constants
+  def setup
+    @jp = Justprep.new
+  end
+
+  def test_that_it_has_a_configuration
     refute_nil VERSION
-    refute_nil JUSTPREP_FOR
-    refute_nil JUSTPREP_FILENAME_IN
-    refute_nil JUSTPREP_FILENAME_OUT
-    refute_nil JUSTPREP_KEYWORDS
-    refute_nil JUSTPREP_MODULE_KEYWORD
+    refute_nil IMPLEMENTATION
+    refute_nil @jp.justprep_for
+    refute_nil @jp.justprep_filename_in
+    refute_nil @jp.justprep_filename_out
+    refute_nil @jp.justprep_keywords
+    refute_nil @jp.justprep_module_keyword
   end
 
 
@@ -38,9 +43,9 @@ class CommonTest < Minitest::Test
   def test_expand_file_path
     home = ENV["HOME"]
 
-    assert_equal expand_file_path("~/temp.just"),           "#{home}/temp.just"
-    assert_equal expand_file_path("$HOME/temp.just"),       "#{home}/temp.just"
-    assert_equal expand_file_path("   $HOME/temp.just  "),  "#{home}/temp.just"
+    assert_equal @jp.expand_file_path("~/temp.just"),           "#{home}/temp.just"
+    assert_equal @jp.expand_file_path("$HOME/temp.just"),       "#{home}/temp.just"
+    assert_equal @jp.expand_file_path("   $HOME/temp.just  "),  "#{home}/temp.just"
   end
 
 
@@ -63,12 +68,12 @@ class CommonTest < Minitest::Test
     # SMELL:  This test _ASSUMES_ that the JUSTPREP_FILENAME_IN
     #         value is "main.just"
 
-    assert_equal JUSTPREP_FOR,          "just"
-    assert_equal JUSTPREP_FILENAME_IN, "main.just"
+    assert_equal @jp.justprep_for,          "just"
+    assert_equal @jp.justprep_filename_in, "main.just"
 
     from_here = "#{RR}/test/glob_dir/one"
     expected  = "/test/main.just"
-    result    = just_find_it(from_here)
+    result    = @jp.just_find_it(from_here)
 
     assert result.to_s.ends_with?(expected)
   end
@@ -85,9 +90,10 @@ class CommonTest < Minitest::Test
 
 
   def test_usage
-    usage_text = usage
+    usage_text = @jp.usage
     assert usage_text.to_s.includes? "justprep"
     assert usage_text.to_s.includes? VERSION
+    assert usage_text.to_s.includes? "--no-brag"
     assert usage_text.to_s.includes? "Dewayne VanHoozer"
     assert usage_text.to_s.includes? "Casey Rodarmor"
     assert usage_text.to_s.includes? "Greg Lutostanski"
@@ -102,7 +108,7 @@ class CommonTest < Minitest::Test
   def test_generate_module_tasks_for_just
     module_names = ["my_mod"]
 
-    assert_equal JUSTPREP_FOR, "just"
+    assert_equal @jp.justprep_for, "just"
 
     expected  = "
 
@@ -112,7 +118,7 @@ class CommonTest < Minitest::Test
 
 "
 
-    results   = generate_module_tasks(module_names)
+    results   = @jp.generate_module_tasks(module_names)
 
     assert_equal results, expected
   end
@@ -124,7 +130,7 @@ class CommonTest < Minitest::Test
     source    = "module #{expected_module_name} #{ENV['RR']}/ruby/test/my_mod/justfile"
     expected  = "module_#{expected_module_name} := \"my_mod/justfile\""
 
-    module_name, module_filename = replacement_for_module_line(999, source)
+    module_name, module_filename = @jp.replacement_for_module_line(999, source)
 
     module_filename.gsub!(__dir__ + '/', '')
 
