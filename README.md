@@ -8,6 +8,8 @@ There is no specific speed benchmark between the two implementations.  I can't p
 
 TL;DR [Examples](https://github.com/MadBomber/justprep/tree/main/examples) and you should look through the [wiki](https://github.com/MadBomber/justprep/wiki) for inspiration.
 
+See [the CHANGELOG](https://github.com/MadBomber/justprep/blob/main/CHANGELOG.md) for recent changes.
+
 ### Installation for the Ruby version
 
     gem install justprep
@@ -22,6 +24,18 @@ Since this capability is implemented in both Ruby and Crystal there is only one 
 
 #### CLI Task Runners Supported
 * [just](https://github.com/casey/just)
+
+#### Command-line options/flags
+
+```text
+  FLAGS:
+      --version   Shows the current version
+  -h, --help      Displays this usage message
+      --no-brag   Do not add header/footer around included content
+```
+
+See [the wiki](https://github.com/MadBomber/justprep/wiki/No-brag%2C-just-fact.) for details on what the `--no-brag` option does.
+
 
 ### Contributing
 

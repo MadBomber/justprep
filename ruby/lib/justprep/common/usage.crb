@@ -45,6 +45,10 @@ SYSTEM ENVIRONMENT VARIABLES:
   JUSTPREP_MODULE_KEYWORD . 'module'
                             '#{@@justprep_module_keyword}'
 
+DOCUMENTATION:
+  A full set of documentation can be found in the project's
+  wiki:  https://github.com/MadBomber/justprep/wiki
+
 SUGGESTION:
   Create an alias for your command shell. For example
     alias jj='justprep && just'

@@ -28,8 +28,8 @@ require "file_utils"
 
 class Justprep
   def initialize
-    handle_command_line_parameters
     set_configuration
+    handle_command_line_parameters
     @module_names = Array(String).new
   end
 
@@ -67,7 +67,7 @@ class Justprep
       #       MUST be complete left-justified.
       #
       if @@justprep_keywords.includes?(parts.first.downcase)
-        out_file.puts "# #{a_line}"
+        out_file.puts "# #{a_line}" unless no_brag?
 
         glob_filename = expand_file_path(parts[1..parts.size].join(" "))
 

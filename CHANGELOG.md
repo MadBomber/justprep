@@ -1,5 +1,8 @@
 ## Change Log
 
+### 1.2.4 The Guns of Will Sonnett starring Walter Brennan
+  * Added the CLI option "--no-brag" which disables the wrapper text markers around the included content in the JUSTPREP_FILENAME_OUT file.
+
 ### 1.2.3 The MODual SQUAD
    * Added support for the fake module convention
    * Refactored more methods to the common directory

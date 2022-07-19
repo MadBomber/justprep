@@ -59,6 +59,18 @@ source ./module-test-cr.s
 source ./module-test-rb.s
 
 
+echo
+echo "############################"
+echo "# testing --no-brag option #"
+echo "############################"
+echo
+
+export JUSTPREP_FILENAME_IN=no-brag.just
+
+source ./no-brag-cr.s
+source ./no-brag-rb.s
+
+
 ###################################################
 ## End of Tests Cleanup
 

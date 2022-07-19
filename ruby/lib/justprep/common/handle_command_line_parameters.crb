@@ -16,16 +16,17 @@ def handle_command_line_parameters
     ARGV.each do |param|
       if "--version" == param
         puts "jusrprep v#{VERSION} (#{IMPLEMENTATION})"
+        exit(1)
       elsif ["-h", "--help"].includes?(param)
         usage
+        exit(1)
       elsif "--no-brag" == param
         @@no_brag = true
       else
         STDERR.puts "justprep does not support: #{param}"
+        exit(1)
       end
     end
-
-    exit(1)
   end
 end
 

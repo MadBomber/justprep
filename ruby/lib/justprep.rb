@@ -48,8 +48,8 @@ class Justprep
   attr_accessor :module_names
 
   def initialize
-    handle_command_line_parameters  # may terminate the process
     set_configuration               # sets class vars from envars
+    handle_command_line_parameters  # may terminate the process
     @module_names = []
   end
 
@@ -92,7 +92,7 @@ class Justprep
       #       MUST be complete left-justified.
       #
       if @@justprep_keywords.include?(parts.first.downcase)
-        out_file.puts "# #{a_line}"
+        out_file.puts "# #{a_line}" unless no_brag?
 
         glob_filename = expand_file_path(parts[1..parts.size].join(" "))
 
