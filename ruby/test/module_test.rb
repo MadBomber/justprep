@@ -9,7 +9,7 @@ class ModuleTest < Minitest::Test
 
 
   def test_module_keyword
-    assert_equal JUSTPREP_MODULE_KEYWORD, 'module'
+    assert_equal @jp.justprep_module_keyword, 'module'
   end
 
 

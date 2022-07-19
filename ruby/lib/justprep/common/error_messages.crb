@@ -1,5 +1,7 @@
 # common/error_messages.crb
 
+class Justprep
+
 # Parameters:
 #   line_number .. Integer (zero-based index)
 #   a_line ....... String
@@ -19,7 +21,7 @@ def error_file_does_not_exist(line_number, a_line)
 
   x              = a_line.index(" ")
 
-  if a_line.starts_with?(JUSTPREP_MODULE_KEYWORD)
+  if a_line.starts_with?(@@justprep_module_keyword.to_s)
     x              = a_line.index(" ", x.nil? ? 0 : x + 1) # because Crystal thinks x could be nil
   end
 
@@ -59,9 +61,11 @@ def error_keyword_conflict
 ERROR:  There is a conflict between the environment variables
         $JUSTPREP_MODULE_KEYWORD _cannot_ be in $JUSTPREP_KEYWORDS
 
-        $JUSTPREP_KEYWORDS => #{JUSTPREP_KEYWORDS.join(comma_space)}
-        $JUSTPREP_MODULE_KEYWORD => #{JUSTPREP_MODULE_KEYWORD}
+        $JUSTPREP_KEYWORDS => #{@@justprep_keywords.join(comma_space)}
+        $JUSTPREP_MODULE_KEYWORD => #{@@justprep_module_keyword}
 
 "
   return nil
 end
+
+end # class Justprep

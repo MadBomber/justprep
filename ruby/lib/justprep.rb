@@ -48,6 +48,7 @@ class Justprep
   attr_accessor :module_names
 
   def initialize
+    set_configuration               # sets class vars from envars
     handle_command_line_parameters  # may terminate the process
     @module_names = []
   end
@@ -58,7 +59,7 @@ class Justprep
     # SMELL:  for some reason the crystal_methods alias_method of
     #         includes? for include? is not working.
 
-    if JUSTPREP_KEYWORDS.include?(JUSTPREP_MODULE_KEYWORD)
+    if @@justprep_keywords.include?(@@justprep_module_keyword)
       error_keyword_conflict
       exit(1)
     end
@@ -66,11 +67,11 @@ class Justprep
     in_filename  = just_find_it
 
     if in_filename.nil?
-      STDERR.puts "WARNING: JUSTPREP_FILENAME_IN Not Found: #{JUSTPREP_FILENAME_IN}"
+      STDERR.puts "WARNING: $JUSTPREP_FILENAME_IN Not Found: #{@@justprep_filename_in}"
       exit(0)
     end
 
-    out_filename  = File.dirname(in_filename) + "/" + JUSTPREP_FILENAME_OUT
+    out_filename  = File.dirname(in_filename) + "/" + @@justprep_filename_out
 
     in_file   = File.open(in_filename,  "r")
     out_file  = File.open(out_filename, "w")
@@ -90,8 +91,8 @@ class Justprep
       # NOTE: Leading spaces are not allowed.  The keywords
       #       MUST be complete left-justified.
       #
-      if JUSTPREP_KEYWORDS.include?(parts.first.downcase)
-        out_file.puts "# #{a_line}"
+      if @@justprep_keywords.include?(parts.first.downcase)
+        out_file.puts "# #{a_line}" unless no_brag?
 
         glob_filename = expand_file_path(parts[1..parts.size].join(" "))
 
@@ -110,7 +111,7 @@ class Justprep
             exit(1)
           end
         end
-      elsif JUSTPREP_MODULE_KEYWORD == parts.first.downcase
+      elsif @@justprep_module_keyword == parts.first.downcase
         result_array  = replacement_for_module_line(line_number, a_line)
         @module_names << result_array.first
         out_file.puts result_array.last

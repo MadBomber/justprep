@@ -382,3 +382,32 @@ exit code: 1
 
 # the path does not exist
 Done.
+
+############################
+# testing --no-brag option #
+############################
+
+
++---------+
+| Crystal |
++---------+
+
+Testing the --no-brag path with Crystal version...
+# .../test/no-brag.just
+content line before include
+No Brag - Just Fact
+content line after include
+
+Done.
+
++------+
+| Ruby |
++------+
+
+Testing --no-brag path with Ruby version...
+# .../test/no-brag.just
+content line before include
+No Brag - Just Fact
+content line after include
+
+Done.

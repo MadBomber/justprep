@@ -1,5 +1,7 @@
 # .../ruby/lig/justprep/common/replacement_for_module_line.crb
 
+class Justprep
+
 # Inserts the module_name into the Array of module_names
 # Returns a string that defines the variable for the path to the module
 #
@@ -48,3 +50,5 @@ def replacement_for_module_line(line_number, a_string)
 
   return [module_name, "module_#{module_name} := \"#{path_to_module}\""]
 end
+
+end # class Justprep
