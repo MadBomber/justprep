@@ -1,0 +1,36 @@
+name: release
+permissions:
+  contents: write
+on:
+  push:
+    tags:
+      - '*'
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            asset-name: justprep-linux-amd64
+          - os: macos-latest
+            asset-name: justprep-macos-amd64
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Download source
+        uses: actions/checkout@v2
+      - name: Install Crystal
+        uses: crystal-lang/install-crystal@v1
+      - name: Install Just
+        uses: extractions/setup-just@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build
+        run: just static=true crystal/build
+      - name: Upload binaries to release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: crystal/bin/justprep
+          asset_name: ${{ matrix.asset-name }}
+          tag: ${{ github.ref }}
