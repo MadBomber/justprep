@@ -1,1 +1,0 @@
-No Brag - Just Fact
