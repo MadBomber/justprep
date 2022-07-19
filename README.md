@@ -39,7 +39,7 @@ See [the wiki](https://github.com/MadBomber/justprep/wiki/No-brag%2C-just-fact.)
 
 ### Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/justprep.
+Bug reports and pull requests are welcome on GitHub at https://github.com/MadBomber/justprep.
 
 If you have a different CLI task runner than what justprep currently supports, let me know so we can add it to the support list.
 
