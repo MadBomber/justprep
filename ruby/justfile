@@ -3,6 +3,8 @@
 
 set positional-arguments := true
 
+version := `cd $RR && semver format %M.%m.%p`
+
 # List available recipes
 @help:
   echo
@@ -27,3 +29,19 @@ test: build
 @install:
   rake install:local
 
+
+# Publish gem rubygems.org and to its own github repo as a package
+publish:
+  #!/usr/bin/env bash
+  cd $RR
+  direnv allow
+
+  export PUSH_HOST=$RUBYGEMS_HOST
+  rake build release
+
+  export PUSH_HOST=$GITHUB_HOST
+  rake build
+
+  gem push --key github \
+    --host https://rubygems.pkg.github.com/MadBomber \ 
+    pkg/justprep-{{version}}.gem
