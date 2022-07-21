@@ -151,6 +151,12 @@ _version_set version="`semver format %M.%m.%p`":
   just _version_set
 
 
+# Release Using Github Workflow/Actions
+release:
+  git tag `semver tag`
+  got push --tags
+
+
 ###########################################
 ## Hidden Recipes
 
