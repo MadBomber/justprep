@@ -153,8 +153,8 @@ _version_set version="`semver format %M.%m.%p`":
 
 # Release Using Github Workflow/Actions
 release:
-  git tag `semver tag`
-  got push --tags
+  git tag -f `semver tag`
+  git push --tags
 
 
 ###########################################
