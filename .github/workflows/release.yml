@@ -5,6 +5,14 @@ on:
   push:
     tags:
       - '*'
+  workflow_dispatch:
+    inputs:
+      logLevel:
+        description: 'Log level'     
+        required: true
+        default: 'warning'
+      tags:
+        description: 'Test scenario tags'  
 jobs:
   build:
     strategy:
@@ -34,3 +42,9 @@ jobs:
           file: crystal/bin/justprep
           asset_name: ${{ matrix.asset-name }}
           tag: ${{ github.ref }}
+  printInputs:
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo "Log level: ${{ github.event.inputs.logLevel }}"
+        echo "Tags: ${{ github.event.inputs.tags }}" 
