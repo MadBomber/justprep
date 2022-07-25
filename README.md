@@ -1,3 +1,5 @@
+Just a quick notice that the `brew` workflow and formula are not working.  
+
 # `justprep`
 
 Just a CLI pre-processor tool for task runners like "just" my current favorite.
