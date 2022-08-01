@@ -30,7 +30,7 @@ mkdir dist
 cp \
   $EXECUTABLE \
   LICENSE \
-  CHABGEKIG,md \
+  CHANGELOG.md \
   README.md \
   $DIST
 
