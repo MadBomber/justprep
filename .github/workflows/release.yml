@@ -37,15 +37,19 @@ jobs:
         - target: x86_64-unknown-linux-musl
           os:     ubuntu-latest
           native: true
+        
         - target: x86_64-apple-darwin
           os:     macos-latest
           native: true
+        
         - target: arm64-apple-darwin
           os:     macos-latest
           native: true
+        
         - target: x86_64-pc-windows-msvc
           os:     windows-latest
           native: true
+        
         - target: aarch64-unknown-linux-gnu
           os:     ubuntu-latest
           native: true
