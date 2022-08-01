@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+#
+# Adapted from https://github.com/casey/just/blob/master/bin/package
+# Intended for use in github actions
+#
+
+set -euxo pipefail
+
+VERSION=${REF#"refs/tags/"}
+DIST=`pwd`/dist
+EXECUTABKE=crystal/bin/justprep
+
+
+echo "Packaging justprep $VERSION for $TARGET..."
+
+echo "Building justprep ..."
+
+just crystal/build
+
+
+if [[ $OS == windows-latest ]]; then
+  EXECUTABLE=$EXECUTABLE.exe
+fi
+
+echo "Copying release files..."
+mkdir dist
+cp \
+  $EXECUTABLE \
+  LICENSE \
+  CHABGEKIG,md \
+  README.md \
+  $DIST
+
+cd $DIST
+echo "Creating release archive..."
+
+case $OS in
+  ubuntu-latest | macos-latest)
+    ARCHIVE=$DIST/justprep-$VERSION-$TARGET.tar.gz
+    tar czf $ARCHIVE *
+    echo "::set-output name=archive::$ARCHIVE"
+    ;;
+  windows-latest)
+    ARCHIVE=$DIST/just-$VERSION-$TARGET.zip
+    7z a $ARCHIVE *
+    echo "::set-output name=archive::`pwd -W`/just-$VERSION-$TARGET.zip"
+    ;;
+esac
