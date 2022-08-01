@@ -11,7 +11,7 @@ OS=$2
 TARGET=$3
 VERSION=${REF#"refs/tags/"}
 DIST=`pwd`/dist
-EXECUTABKE=crystal/bin/justprep
+EXECUTABLE=crystal/bin/justprep
 
 
 echo "Packaging justprep $VERSION for $TARGET..."
