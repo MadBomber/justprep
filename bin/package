@@ -6,6 +6,11 @@
 
 set -euxo pipefail
 
+echo "======================"
+echo $@
+echo "======================"
+
+
 VERSION=${REF#"refs/tags/"}
 DIST=`pwd`/dist
 EXECUTABKE=crystal/bin/justprep
