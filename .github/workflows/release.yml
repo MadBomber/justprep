@@ -1,8 +1,11 @@
 name: release
 permissions:
   contents: write
+
 on:
   push:
+    branches:
+    - main
     tags:
       - '*'
   workflow_dispatch:
@@ -13,17 +16,41 @@ on:
         default: 'warning'
       tags:
         description: 'Test scenario tags'  
+
+defaults:
+  run:
+    shell: bash
+
 jobs:
   build:
+    name:
+      Build
+
     strategy:
       fail-fast: false
       matrix:
+        target:
+        - aarch64-unknown-linux-gnu
+        - x86_64-apple-darwin
+        - x86_64-pc-windows-msvc
+        - x86_64-unknown-linux-musl
+
         include:
-          - os: ubuntu-latest
-            asset-name: justprep-linux-amd64
-          - os: macos-latest
-            asset-name: justprep-macos-amd64
+        - target: x86_64-unknown-linux-musl
+          os:     ubuntu-latest
+          native: true
+        - target: x86_64-apple-darwin
+          os:     macos-latest
+          native: true
+        - target: x86_64-pc-windows-msvc
+          os:     windows-2016
+          native: true
+        - target: aarch64-unknown-linux-gnu
+          os:     ubuntu-latest
+          native: false
+
     runs-on: ${{ matrix.os }}
+
     steps:
       - name: Download source
         uses: actions/checkout@v2
@@ -33,7 +60,7 @@ jobs:
         uses: extractions/setup-just@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Build
+      - name: Build Justprep
         run: just static=true crystal/build
       - name: Upload binaries to release
         uses: svenstaro/upload-release-action@v2
