@@ -18,7 +18,10 @@ See [the CHANGELOG](https://github.com/MadBomber/justprep/blob/main/CHANGELOG.md
 
 ### Installation for the Crystal version
 
-    brew install --build-from-source MadBomber/tap/justprep
+    brew tap madbomber/justprep
+    brew install --build-from-source justprep
+
+Ypu can also [download a binary release.](https://github.com/MadBomber/justprep/releases/)
 
 ### Documentation
 
