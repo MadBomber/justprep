@@ -1,3 +1,8 @@
+# just v1.12+ has Includes!
+## justprep is considered overcome-by-events (OBE)
+### with v1.12+ of just, this pre-processor is no longer relevant.
+#### If you think it should continue to be available, let me know
+
 Just a quick notice that the `brew` workflow and formula are not working.  
 
 # `justprep`
