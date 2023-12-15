@@ -50,7 +50,7 @@ def create_run_tasks(module_names)
 # Module #{mod_name}
 # Encapsulates additional tasks
 #{mod_name}:
-  #{JUSTPREP_FOR} #{FILENAME_OPTION} ${module_#{mod_name}} ${@}
+  #{JUSTPREP_FOR} -d . #{FILENAME_OPTION} ${module_#{mod_name}} ${@}
 
 "
   end
