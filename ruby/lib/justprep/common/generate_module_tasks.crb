@@ -31,7 +31,7 @@ def create_just_tasks(module_names)
 
 # Module #{mod_name}
 @#{mod_name} what='' args='':
-  #{@@justprep_for} #{@@filename_option} {{module_#{mod_name}}} {{what}} {{args}}
+  #{@@justprep_for} -d . #{@@filename_option} {{module_#{mod_name}}} {{what}} {{args}}
 
 "
   end
@@ -39,6 +39,8 @@ def create_just_tasks(module_names)
   return tasks
 end
 
+
+# SMELL: are you sure this method is executed?
 
 def create_run_tasks(module_names)
   tasks = ""
@@ -50,7 +52,7 @@ def create_run_tasks(module_names)
 # Module #{mod_name}
 # Encapsulates additional tasks
 #{mod_name}:
-  #{JUSTPREP_FOR} #{FILENAME_OPTION} ${module_#{mod_name}} ${@}
+  #{JUSTPREP_FOR} -d . #{FILENAME_OPTION} ${module_#{mod_name}} ${@}
 
 "
   end

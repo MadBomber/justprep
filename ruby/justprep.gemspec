@@ -38,4 +38,7 @@ Gem::Specification.new do |spec|
   end
 
   spec.add_development_dependency 'bump'
+  spec.add_development_dependency 'debug_me'
+  spec.add_development_dependency 'minitest'
+  spec.add_development_dependency 'semver2'
 end

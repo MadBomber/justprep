@@ -22,5 +22,6 @@ end
 class File
   class << self
     alias_method :read_lines, :readlines
+    alias_method :exists?,    :exist?
   end
 end

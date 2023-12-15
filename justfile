@@ -1,6 +1,6 @@
 # github.com/MadBomber/justprep/**/justfile
 #
-# gem install semver
+# gem install semver2
 #   Provides for semantic version tracking
 #
 # brew install just
