@@ -31,7 +31,7 @@ def create_just_tasks(module_names)
 
 # Module #{mod_name}
 @#{mod_name} what='' args='':
-  #{@@justprep_for} #{@@filename_option} {{module_#{mod_name}}} {{what}} {{args}}
+  #{@@justprep_for} -d . #{@@filename_option} {{module_#{mod_name}}} {{what}} {{args}}
 
 "
   end

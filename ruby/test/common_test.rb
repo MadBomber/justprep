@@ -114,7 +114,7 @@ class CommonTest < Minitest::Test
 
 # Module my_mod
 @my_mod what='' args='':
-  just -f {{module_my_mod}} {{what}} {{args}}
+  just -d . -f {{module_my_mod}} {{what}} {{args}}
 
 "
 
