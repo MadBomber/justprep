@@ -18,10 +18,15 @@ Gem::Specification.new do |spec|
   EOS
 
   spec.homepage      = "http://github.com/MadBomber/justprep"
+  
   spec.license       = "MIT"
   spec.required_ruby_version = ">= 2.4.0"
 
-  spec.metadata["allowed_push_host"] = ""
+  spec.metadata["allowed_push_host"] = "https://rubygems.org"
+
+  spec.metadata["homepage_uri"]     = spec.homepage
+  spec.metadata["source_code_uri"]  = spec.homepage
+  spec.metadata["changelog_uri"]    = spec.homepage
 
   # Specify which files should be added to the gem when it is released.
   # The `git ls-files -z` loads the files in the RubyGem that have been added into git.
@@ -32,10 +37,6 @@ Gem::Specification.new do |spec|
   spec.bindir        = "bin"
   spec.executables   = ["justprep"]
   spec.require_paths = ["lib"]
-
-  if spec.respond_to?(:metadata)
-    spec.metadata['allowed_push_host'] = ENV['PUSH_HOST']
-  end
 
   spec.add_development_dependency 'bump'
   spec.add_development_dependency 'debug_me'
