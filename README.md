@@ -1,9 +1,13 @@
-# just v1.12+ has Includes!
-## justprep is considered overcome-by-events (OBE)
-### with v1.12+ of just, this pre-processor is no longer relevant.
-#### If you think it should continue to be available, let me know
+# just v1.19+ has Includes and Modules!
 
-Just a quick notice that the `brew` workflow and formula are not working.  
+**import**: `just` allows for recursive imports whereas `justprep` does not.
+
+**mod**: feature in `just` may be a little unstable but still worth checking out.
+
+I am looking forward to when I can declare `justprep` a dead project because its features have been fully implemented in the main `just` application.
+
+Just a quick notice that the `brew` workflow and formula for `justprep` are not working.  Ypu can [download the latest crystal binary release.](https://github.com/MadBomber/justprep/releases/)
+
 
 # `justprep`
 
